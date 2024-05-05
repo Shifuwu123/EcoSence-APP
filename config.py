@@ -3,7 +3,7 @@ from data import *
 from graph_config import *
 
 ################################################################################
-""" Configuracion Menus """
+""" Configuración Menus """
 
 
 def toggle_data(e):
@@ -27,7 +27,7 @@ class dpbx_graficos(ft.Dropdown):
         self.content_padding = 10
 
 
-""" Fin configuracion Menus """
+""" Fin configuración Menus """
 ################################################################################
 """ Filas de Contenedores de Sistema """
 
@@ -46,7 +46,7 @@ class rw1_cnt_gral_stats(ft.Row):
         # Definimos el título, el icono y el contenido correspondiente
         super().__init__()
         self.controls = [
-            # Icono y titulo del contenedor de Estatisticas Generales
+            # Icono y titulo del contenedor de Estadísticas Generales
             ft.Icon(name=icono, size=28),
             ft.Text(
                 value=titulo,
@@ -64,7 +64,7 @@ class rw1_cnt_gral_stats(ft.Row):
 class rrw_cnt_system(ft.ResponsiveRow):
     def __init__(
         self,
-        # Parametros
+        # Parámetros
         actuador: t.Literal[
             "luces",
             "ventilador",
@@ -112,7 +112,7 @@ class rrw_cnt_params(ft.ResponsiveRow):
 
     def __init__(
         self,
-        # Parametros
+        # Parámetros
         parametro: t.Literal["luz", "humedad", "tierra", "temperatura"],
         dato: float,
     ):
@@ -178,7 +178,7 @@ class rrw_cnt_params(ft.ResponsiveRow):
 
 """ Fin Filas de Contenedores de Sistema """
 ##################################################################################
-""" Contenedor de Estadisticas """
+""" Contenedor de Estadísticas """
 
 
 class cnt_crop(ft.Container):
@@ -346,14 +346,14 @@ class cnts_stats_page(ft.Container):
                 - "cultivo": Información del cultivo.
                 - "sistema": Información del sistema.
                 - "parámetros": Información de los parámetros.
-                - "estadisticas": Información de las estadísticas.
+                - "estadísticas": Información de las estadísticas.
         ctn_contenido (ft.Container): Contenedor que se encarga de mostrar la
             información correspondiente a la sección seleccionada.
     """
 
     def __init__(
         self,
-        parametro: t.Literal["cultivo", "sistema", "parámetros", "estadisticas"],
+        parametro: t.Literal["cultivo", "sistema", "parámetros", "estadísticas"],
         chart: ft.LineChart = None,
         ctn_contenido=None,
     ):
@@ -373,7 +373,7 @@ class cnts_stats_page(ft.Container):
             icono = ft.icons.LIST_ALT
             ctn_contenido = cnt_params()
 
-        elif parametro == "estadisticas":
+        elif parametro == "estadísticas":
             titulo = "Información de las Estadísticas"
             icono = ft.icons.SATELLITE_SHARP
             ctn_contenido = cnt_stats(chart)
@@ -412,7 +412,7 @@ class cnts_stats_page(ft.Container):
         self.margin = 10
 
 
-""" Fin Contenedor de Estadisticas """
+""" Fin Contenedor de Estadísticas """
 ###############################################################################
 """ Variables globales """
 

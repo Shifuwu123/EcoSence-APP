@@ -9,7 +9,7 @@ from config import *
 
 # Appbar de la pagina principal
 appbar_main = ft.AppBar(
-    title=ft.Text("Estadisticas 🗃️"),
+    title=ft.Text("Estadísticas 🗃️"),
     actions=[ft.IconButton(icon=ft.icons.ENERGY_SAVINGS_LEAF, padding=15)],
     bgcolor=ft.colors.with_opacity(0.04, ft.colors.TEAL_ACCENT_400),
 )
@@ -22,7 +22,7 @@ appbar_main = ft.AppBar(
 def main(page: Page):
     ###############################################################
     """Aspectos generales de la pagina"""
-    page.title = "EcoSence"
+    page.title = "EcoSense"
     page.adaptive = True
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.window_min_width = 380
@@ -54,7 +54,7 @@ def main(page: Page):
                     controls=[
                         cnts_stats_page("parámetros"),
                         cnts_stats_page(
-                            "estadisticas",
+                            "estadísticas",
                             chart=chart,
                         ),
                     ],
