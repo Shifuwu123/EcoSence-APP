@@ -50,13 +50,11 @@ class rw1_cnt_gral_stats(ft.Row):
             ft.Icon(name=icono, size=28),
             ft.Text(
                 value=titulo,
-                width=200,
                 size=15,
                 text_align=ft.TextAlign.CENTER,
             ),
         ]
         self.alignment = ft.MainAxisAlignment.SPACE_EVENLY
-        self.width = 380
         self.height = 55
         self.vertical_alignment = ft.CrossAxisAlignment.CENTER
 
@@ -65,8 +63,9 @@ class rw1_cnt_gral_stats(ft.Row):
 ##################################################################################
 """ Contenedor de Estadísticas """
 
+
 class cnt_stats(ft.Container):
-    def __init__(self, fg_grafico):
+    def __init__(self):
         super().__init__()
         self.content = ft.Column(
             controls=[
@@ -96,12 +95,12 @@ class cnt_stats(ft.Container):
                 ),
                 # 2da fila con el grafico
                 ft.Container(
-                    content=fg_grafico,
+                    content=chart,
                     adaptive=True,
-                    height=270,
+                    height=300,
+                    padding=10,
                 ),
             ],
-            width=350,
         )
         self.bgcolor = ft.colors.LIGHT_GREEN_600
 
@@ -124,18 +123,16 @@ class cnts_stats_page(ft.Container):
     def __init__(
         self,
         parametro: t.Literal["cultivo", "sistema", "parámetros", "estadísticas"],
-        chart: ft.LineChart = None,
         ctn_contenido=None,
     ):
         # Definimos el título, el icono y el contenido correspondiente
         if parametro == "estadísticas":
             titulo = "Información de las Estadísticas"
             icono = ft.icons.SATELLITE_SHARP
-            ctn_contenido = cnt_stats(chart)
+            ctn_contenido = cnt_stats()
 
         # Establecemos el color de fondo del contenedor del contenido
         if ctn_contenido is not None:
-            ctn_contenido.width = 380
             ctn_contenido.padding = 10
             ctn_contenido.border_radius = 10
             ctn_contenido.alignment = ft.alignment.center
@@ -145,20 +142,20 @@ class cnts_stats_page(ft.Container):
         super().__init__()
         self.content = ft.Column(
             controls=[
+                # 1ra fila con el icono y el titulo
                 ft.Container(
                     content=rw1_cnt_gral_stats(titulo, icono),
                     bgcolor=ft.colors.GREEN_600,
                     border_radius=10,
                 ),
-                # Fila con el icono y el titulo
-                # Contenido correspondiente
+                # 2da fila con el contenido correspondiente
                 ctn_contenido,
             ],
             adaptive=True,
         )
 
         # Establecemos las propiedades del contenedor
-        self.width = 400
+        self.height = 650
         self.alignment = ft.alignment.center
         self.padding = 15
         self.border_radius = 10
@@ -170,6 +167,4 @@ class cnts_stats_page(ft.Container):
 """ Fin Contenedor de Estadísticas """
 ###############################################################################
 """ Variables globales """
-
-chart = graph_major(data_series=data_temperatura)
 menu_graficos = dpbx_graficos()

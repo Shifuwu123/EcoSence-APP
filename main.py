@@ -36,10 +36,7 @@ def main(page: Page):
     """ Agregar datos a la pagina """
     page.add(
         appbar_main,  # Appbar de la pagina
-        cnts_stats_page(
-            "estadísticas",
-            chart=chart,
-        ),
+        cnts_stats_page("estadísticas"),
     )
     """ Fin Agregar datos a la pagina """
 
