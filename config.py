@@ -200,37 +200,40 @@ class cnt_crop(ft.Container):
 
     def __init__(self, crop_name: str, week: int, phase: str):
         super().__init__()
-        self.content = ft.Column(
-            controls=[
-                # Nombre del cultivo
-                ft.TextField(
-                    crop_name,
-                    label="Crop Name:",
-                    read_only=True,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                # Semana del cultivo
-                ft.TextField(
-                    f"{week} week",
-                    label="Crop Week:",
-                    read_only=True,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                # Fase del cultivo
-                ft.TextField(
-                    phase.capitalize(),
-                    label="Crop Phase:",
-                    read_only=True,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                # POR AGREGAR :
-                # - tiempo restante
-                # - frecuencia de riego
-                # - tiempo de recolección
-                # - timelines tipo "pop-up"
-                # - gasto energético
-                # - calcular huella de carbono por cultivo
-            ],
+        self.content = ft.Container(
+            content=ft.Column(
+                controls=[
+                    # Nombre del cultivo
+                    ft.TextField(
+                        crop_name,
+                        label="Crop Name:",
+                        read_only=True,
+                        text_align=ft.TextAlign.CENTER,
+                    ),
+                    # Semana del cultivo
+                    ft.TextField(
+                        f"{week} week",
+                        label="Crop Week:",
+                        read_only=True,
+                        text_align=ft.TextAlign.CENTER,
+                    ),
+                    # Fase del cultivo
+                    ft.TextField(
+                        phase.capitalize(),
+                        label="Crop Phase:",
+                        read_only=True,
+                        text_align=ft.TextAlign.CENTER,
+                    ),
+                    # POR AGREGAR :
+                    # - tiempo restante
+                    # - frecuencia de riego
+                    # - tiempo de recolección
+                    # - timelines tipo "pop-up"
+                    # - gasto energético
+                    # - calcular huella de carbono por cultivo
+                ],
+            ),
+            padding=10,
         )
 
 
@@ -248,15 +251,18 @@ class cnt_system(ft.Container):
 
     def __init__(self):
         super().__init__()
-        self.content = ft.Column(
-            # Contenedor responsivo de los parámetros
-            controls=[
-                rrw_cnt_system("Luces:", True, ft.icons.LIGHT_MODE),
-                rrw_cnt_system("Ventilador:", False, ft.icons.MODE_FAN_OFF_ROUNDED),
-                rrw_cnt_system("Extractor:", True, ft.icons.AIR),
-                rrw_cnt_system("Bomba:", False, ft.icons.WATER_DROP),
-            ],
-            width=350,
+        self.content = ft.Container(
+            content=ft.Column(
+                # Contenedor responsivo de los parámetros
+                controls=[
+                    rrw_cnt_system("Luces:", True, ft.icons.LIGHT_MODE),
+                    rrw_cnt_system("Ventilador:", False, ft.icons.MODE_FAN_OFF_ROUNDED),
+                    rrw_cnt_system("Extractor:", True, ft.icons.AIR),
+                    rrw_cnt_system("Bomba:", False, ft.icons.WATER_DROP),
+                ],
+                width=350,
+            ),
+            padding=10,
         )
 
 
@@ -276,62 +282,68 @@ class cnt_params(ft.Container):
 
     def __init__(self):
         super().__init__()
-        self.content = ft.Column(
-            controls=[
-                # Contenedor responsivo de los parámetros
-                ft.ResponsiveRow(
-                    controls=[
-                        rrw_cnt_params("temperatura", 25),
-                        rrw_cnt_params("humedad", 50),
-                        rrw_cnt_params("tierra", 50),
-                        rrw_cnt_params("luz", 50),
-                    ],
-                    columns=4,
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                ),
-            ],
-            width=350,
+        self.content = ft.Container(
+            content=ft.Column(
+                controls=[
+                    # Contenedor responsivo de los parámetros
+                    ft.ResponsiveRow(
+                        controls=[
+                            rrw_cnt_params("temperatura", 25),
+                            rrw_cnt_params("humedad", 50),
+                            rrw_cnt_params("tierra", 50),
+                            rrw_cnt_params("luz", 50),
+                        ],
+                        columns=4,
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    ),
+                ],
+                width=350,
+            ),
+            padding=10,
         )
 
 
 class cnt_stats(ft.Container):
     def __init__(self, fg_grafico):
         super().__init__()
-        self.content = ft.Column(
-            controls=[
-                # 1ra fila con titulo y menu de gráficos
-                ft.Container(
-                    content=ft.ResponsiveRow(
-                        controls=[
-                            # Titulo
-                            ft.Text(
-                                "Estadísticas: ",
-                                size=20,
-                                weight="bold",
-                                col=1,
-                            ),
-                            # Menu de gráficos
-                            ft.Container(
-                                content=menu_graficos,
-                                adaptive=True,
-                                col=1,
-                            ),
-                        ],
-                        columns=2,
-                        alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                        height=55,
-                    )
-                ),
-                # 2da fila con el gráfico
-                ft.Container(
-                    content=fg_grafico,
-                    adaptive=True,
-                    height=270,
-                ),
-            ],
-            width=350,
+        self.content = ft.Container(
+            content=ft.Column(
+                controls=[
+                    # 1ra fila con titulo y menu de gráficos
+                    ft.Container(
+                        content=ft.ResponsiveRow(
+                            controls=[
+                                # Titulo
+                                ft.Text(
+                                    "Estadísticas: ",
+                                    size=20,
+                                    weight="bold",
+                                    col=1,
+                                ),
+                                # Menu de gráficos
+                                ft.Container(
+                                    content=menu_graficos,
+                                    adaptive=True,
+                                    col=1,
+                                ),
+                            ],
+                            columns=2,
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                            height=55,
+                        )
+                    ),
+                    # 2da fila con el gráfico
+                    ft.Container(
+                        content=fg_grafico,
+                        adaptive=True,
+                        height=270,
+                    ),
+                ],
+                width=350,
+            ),
+            padding=10,
         )
         self.bgcolor = ft.colors.LIGHT_GREEN_600
 
@@ -418,5 +430,3 @@ class cnts_stats_page(ft.Container):
 
 chart = graph_major(data_series=data_temperatura)
 menu_graficos = dpbx_graficos()
-
-print('hola mundo')
