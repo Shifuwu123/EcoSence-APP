@@ -1,7 +1,7 @@
 import flet as ft
 
 ################################################################################
-# Configuracion Gráficas ##############################################
+# Configuración Gráficas ##############################################
 class grid_line(ft.ChartGridLines):
     def __init__(self):
         super().__init__()
@@ -29,5 +29,5 @@ class graph_major(ft.LineChart):
         self.max_x = 11
         self.expand = True
 
-# Fin configuracion Gráficas ############################################
+# Fin configuración Gráficas ############################################
 ################################################################################

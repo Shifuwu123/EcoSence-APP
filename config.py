@@ -300,7 +300,7 @@ class cnt_stats(ft.Container):
         super().__init__()
         self.content = ft.Column(
             controls=[
-                # 1ra fila con titulo y menu de graficos
+                # 1ra fila con titulo y menu de gráficos
                 ft.Container(
                     content=ft.ResponsiveRow(
                         controls=[
@@ -311,7 +311,7 @@ class cnt_stats(ft.Container):
                                 weight="bold",
                                 col=1,
                             ),
-                            # Menu de graficos
+                            # Menu de gráficos
                             ft.Container(
                                 content=menu_graficos,
                                 adaptive=True,
@@ -324,7 +324,7 @@ class cnt_stats(ft.Container):
                         height=55,
                     )
                 ),
-                # 2da fila con el grafico
+                # 2da fila con el gráfico
                 ft.Container(
                     content=fg_grafico,
                     adaptive=True,
@@ -418,3 +418,5 @@ class cnts_stats_page(ft.Container):
 
 chart = graph_major(data_series=data_temperatura)
 menu_graficos = dpbx_graficos()
+
+print('hola mundo')
