@@ -38,6 +38,7 @@ def main(page: Page):
         appbar_main,  # Appbar de la pagina
         ft.ListView(
             controls=[
+                # 1ra fila
                 ft.Row(
                     controls=[
                         cnts_stats_page("cultivo"),
@@ -50,6 +51,7 @@ def main(page: Page):
                     run_spacing=10,
                     width=page.window_width,
                 ),
+                # 2da Fila
                 ft.Row(
                     controls=[
                         cnts_stats_page("parámetros"),
