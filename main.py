@@ -36,7 +36,39 @@ def main(page: Page):
     """ Agregar datos a la pagina """
     page.add(
         appbar_main,  # Appbar de la pagina
-        cnts_stats_page("estadísticas"),
+        ft.ListView(
+            controls=[
+                ft.Row(
+                    controls=[
+                        cnts_stats_page("cultivo"),
+                        cnts_stats_page("sistema"),
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                    # Hacer la pagina responsiva
+                    wrap=True,
+                    spacing=10,
+                    run_spacing=10,
+                    width=page.window_width,
+                ),
+                ft.Row(
+                    controls=[
+                        cnts_stats_page("parámetros"),
+                        cnts_stats_page(
+                            "estadísticas",
+                            chart=chart,
+                        ),
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                    # Hacer la pagina responsiva
+                    wrap=True,
+                    spacing=5,
+                    run_spacing=5,
+                    width=page.window_width,
+                ),
+            ],
+            expand=1,
+            spacing=10
+        ),
     )
     """ Fin Agregar datos a la pagina """
 

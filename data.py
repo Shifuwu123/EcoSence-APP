@@ -1,4 +1,5 @@
 import flet as ft
+from graph_config import *
 
 data_temperatura = [
     ft.LineChartData(
