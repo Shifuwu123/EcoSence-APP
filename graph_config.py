@@ -26,14 +26,23 @@ class chart_title(ft.ChartAxis):
 
 class chart_axis_bottom(ft.ChartAxisLabel):
     def __init__(self, position: int, hr_ago: int):
-        hr_ago = f"{hr_ago}H AGO" if hr_ago != 0 else 'NOW'
+        hr_ago = f"{hr_ago}h" if hr_ago != 0 else 'NOW'
+
+        # Wrap label    
+        if hr_ago == "6h":
+            hr_ago = 'AGO/6h'
+            wrap = True
+
+        else:
+            wrap = False
 
         time_label = ft.Container(
             content=ft.Text(
                 hr_ago,
-                size=16,
+                size=14,
                 weight=ft.FontWeight.BOLD,
-                color=ft.colors.with_opacity(0.5, ft.colors.ON_SURFACE),
+                text_align=ft.TextAlign.CENTER,
+                no_wrap=wrap,
             ),
             margin=ft.margin.only(top=10),
         )
@@ -55,7 +64,7 @@ class chart_title2(ft.ChartAxis):
             chart_axis_bottom(position=10, hr_ago=1),
             chart_axis_bottom(position=12, hr_ago=0),
         ]
-        self.labels_size = 32
+        self.labels_size = 35
 
 
 class grid_line(ft.ChartGridLines):

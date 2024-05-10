@@ -25,8 +25,8 @@ def main(page: Page):
     page.title = "EcoSense"
     page.adaptive = True
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.window_min_width = 380
-    page.window_width = 400
+    page.window_min_width = 300
+    page.window_width = 550
     page.theme = ft.Theme(color_scheme_seed="green")
     page.window_always_on_top = True
 
