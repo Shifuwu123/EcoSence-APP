@@ -63,6 +63,12 @@ class rw1_cnt_gral_stats(ft.Row):
 ##################################################################################
 """ Contenedor de Estadísticas """
 
+grafico = ft.Container(
+    graph_major(data_series=data_temperatura),
+    padding=ft.Padding(15, 10, 30, 10),
+    bgcolor=ft.colors.GREEN_900,
+    width=360,
+)
 
 class cnt_stats(ft.Container):
     def __init__(self):
@@ -95,9 +101,7 @@ class cnt_stats(ft.Container):
                 ),
                 # 2da fila con el grafico
                 ft.Container(
-                    content=chart,
-                    adaptive=True,
-                    height=300,
+                    content=grafico,
                     padding=10,
                 ),
             ],
