@@ -31,8 +31,7 @@ class chart_axis_bottom(ft.ChartAxisLabel):
             content=ft.Text(
                 hr_ago,
                 size=16,
-                weight=ft.FontWeight.BOLD,
-                color=ft.colors.with_opacity(0.5, ft.colors.ON_SURFACE),
+                weight=ft.FontWeight.BOLD
             ),
             margin=ft.margin.only(top=10),
         )
@@ -77,11 +76,12 @@ class graph_major(ft.LineChart):
         )
         self.horizontal_grid_lines = grid_line()
         self.vertical_grid_lines = grid_line()
-        self.tooltip_bgcolor = ft.colors.with_opacity(0.8, ft.colors.BLUE_GREY)
+        self.left_axis = chart_title()
+        self.bottom_axis = chart_title2()
         self.min_y = 0
-        self.max_y = 6
+        self.max_y = 12
         self.min_x = 0
-        self.max_x = 11
+        self.max_x = 12
         self.expand = True
 
 # Fin configuración Gráficas ############################################

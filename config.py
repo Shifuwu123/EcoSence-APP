@@ -339,10 +339,10 @@ class cnt_stats(ft.Container):
                         content=chart,
                         adaptive=True,
                         height=270,
-                        padding=10,
+                        padding=10
                     ),
                 ],
-                width=350,
+                #width=350,
             ),
             padding=10,
         )
@@ -417,7 +417,7 @@ class cnts_stats_page(ft.Container):
         )
 
         # Establecemos las propiedades del contenedor
-        self.width = 400
+        self.width = 500
         self.height = 470
         self.alignment = ft.alignment.center
         self.padding = 15
