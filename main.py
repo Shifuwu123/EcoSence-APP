@@ -14,6 +14,14 @@ appbar_main = ft.AppBar(
     bgcolor=ft.colors.with_opacity(0.04, ft.colors.TEAL_ACCENT_400),
 )
 
+filas = ft.Row(
+    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+    # Hacer la pagina responsiva
+    wrap=True,
+    spacing=10,
+    run_spacing=10,
+)
+
 """ Fin Variables globales """
 ###############################################################################
 """ Paginas de la aplicación """
@@ -31,7 +39,9 @@ def main(page: Page):
     page.window_always_on_top = True
 
     """ Fin aspectos generales de la pagina """
-
+    """
+    
+    """
     ###############################################################
     """ Agregar datos a la pagina """
     page.add(
@@ -44,32 +54,29 @@ def main(page: Page):
                         cnts_stats_page("cultivo"),
                         cnts_stats_page("sistema"),
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                    alignment=ft.MainAxisAlignment.CENTER,
                     # Hacer la pagina responsiva
                     wrap=True,
-                    spacing=10,
-                    run_spacing=10,
+                    spacing=15,
+                    run_spacing=5,
                     width=page.window_width,
                 ),
                 # 2da Fila
                 ft.Row(
                     controls=[
                         cnts_stats_page("parámetros"),
-                        cnts_stats_page(
-                            "estadísticas",
-                            chart=chart,
-                        ),
+                        cnts_stats_page("estadísticas"),
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                    alignment=ft.MainAxisAlignment.CENTER,
                     # Hacer la pagina responsiva
                     wrap=True,
-                    spacing=5,
+                    spacing=15,
                     run_spacing=5,
                     width=page.window_width,
                 ),
             ],
             expand=1,
-            spacing=10
+            spacing=10,
         ),
     )
     """ Fin Agregar datos a la pagina """
