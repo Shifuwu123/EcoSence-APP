@@ -30,26 +30,26 @@ class chart_axis_bottom(ft.ChartAxisLabel):
 
         # Wrap label    
         if hr_ago == "6h":
-            hr_ago = 'AGO/6h'
-            wrap = True
-
+            hr_ago = '6h\nAGO'
+            padding = 0
         else:
-            wrap = False
+            padding = ft.padding.only(top=5.5)
 
         time_label = ft.Container(
             content=ft.Text(
                 hr_ago,
-                size=14,
+                size=12,
                 weight=ft.FontWeight.BOLD,
                 text_align=ft.TextAlign.CENTER,
-                no_wrap=wrap,
             ),
-            margin=ft.margin.only(top=10),
+            padding=padding,
         )
 
         super().__init__()
         self.value = position
         self.label = time_label
+
+        x=ft.ChartAxisLabel()
 
 
 class chart_title2(ft.ChartAxis):

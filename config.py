@@ -65,9 +65,9 @@ class rw1_cnt_gral_stats(ft.Row):
 
 grafico = ft.Container(
     graph_major(data_series=data_temperatura),
-    padding=ft.Padding(15, 10, 30, 10),
+    padding=ft.Padding(15, 10, 30, 100),
     bgcolor=ft.colors.GREEN_900,
-    width=360,
+    #width=800,
 )
 
 class cnt_stats(ft.Container):
@@ -105,6 +105,8 @@ class cnt_stats(ft.Container):
                     padding=10,
                 ),
             ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         )
         self.bgcolor = ft.colors.LIGHT_GREEN_600
 
