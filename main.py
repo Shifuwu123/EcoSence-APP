@@ -14,6 +14,14 @@ appbar_main = ft.AppBar(
     bgcolor=ft.colors.with_opacity(0.04, ft.colors.TEAL_ACCENT_400),
 )
 
+filas = ft.Row(
+    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+    # Hacer la pagina responsiva
+    wrap=True,
+    spacing=10,
+    run_spacing=10,
+)
+
 """ Fin Variables globales """
 ###############################################################################
 """ Paginas de la aplicación """
@@ -25,29 +33,53 @@ def main(page: Page):
     page.title = "EcoSense"
     page.adaptive = True
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.window_min_width = 420
-    page.window_width = 550
+    page.window_min_width = 720
+    page.window_width = 720
     page.theme = ft.Theme(color_scheme_seed="green")
     page.window_always_on_top = True
 
     """ Fin aspectos generales de la pagina """
-    def page_resize(e):
-        pw.value = f"{page.width} px"
-        pw.update()
-
-    page.on_resize = page_resize
-
-    pw = ft.Text(bottom=50, right=50, style="displaySmall")
-    page.overlay.append(pw)
-
+    """
+    
+    """
     ###############################################################
     """ Agregar datos a la pagina """
     page.add(
         appbar_main,  # Appbar de la pagina
-        cnts_stats_page("estadísticas"),
-        
+        ft.ListView(
+            controls=[
+                # 1ra fila
+                ft.Row(
+                    controls=[
+                        cnts_stats_page("cultivo"),
+                        cnts_stats_page("sistema"),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    # Hacer la pagina responsiva
+                    wrap=True,
+                    spacing=15,
+                    run_spacing=5,
+                    width=page.window_width,
+                ),
+                # 2da Fila
+                ft.Row(
+                    controls=[
+                        cnts_stats_page("parámetros"),
+                        cnts_stats_page("estadísticas"),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    # Hacer la pagina responsiva
+                    wrap=True,
+                    spacing=15,
+                    run_spacing=5,
+                    width=page.window_width,
+                ),
+            ],
+            expand=1,
+            spacing=10,
+        ),
     )
     """ Fin Agregar datos a la pagina """
-    page_resize(None)
+
 
 ft.app(target=main)

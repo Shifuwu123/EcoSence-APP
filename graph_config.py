@@ -1,6 +1,5 @@
 import flet as ft
 
-
 ################################################################################
 # Configuración Gráficas ##############################################
 class chart_axis_left(ft.ChartAxisLabel):
@@ -26,30 +25,20 @@ class chart_title(ft.ChartAxis):
 
 class chart_axis_bottom(ft.ChartAxisLabel):
     def __init__(self, position: int, hr_ago: int):
-        hr_ago = f"{hr_ago}h" if hr_ago != 0 else 'NOW'
-
-        # Wrap label    
-        if hr_ago == "6h":
-            hr_ago = '6h\nAGO'
-            padding = 0
-        else:
-            padding = ft.padding.only(top=5.5)
+        hr_ago = f"{hr_ago}H AGO" if hr_ago != 0 else 'NOW'
 
         time_label = ft.Container(
             content=ft.Text(
                 hr_ago,
-                size=12,
-                weight=ft.FontWeight.BOLD,
-                text_align=ft.TextAlign.CENTER,
+                size=16,
+                weight=ft.FontWeight.BOLD
             ),
-            padding=padding,
+            margin=ft.margin.only(top=10),
         )
 
         super().__init__()
         self.value = position
         self.label = time_label
-
-        x=ft.ChartAxisLabel()
 
 
 class chart_title2(ft.ChartAxis):
@@ -64,9 +53,9 @@ class chart_title2(ft.ChartAxis):
             chart_axis_bottom(position=10, hr_ago=1),
             chart_axis_bottom(position=12, hr_ago=0),
         ]
-        self.labels_size = 35
-
-
+        self.labels_size = 32
+        
+        
 class grid_line(ft.ChartGridLines):
     def __init__(self):
         super().__init__()
@@ -94,7 +83,6 @@ class graph_major(ft.LineChart):
         self.min_x = 0
         self.max_x = 12
         self.expand = True
-
 
 # Fin configuración Gráficas ############################################
 ################################################################################
