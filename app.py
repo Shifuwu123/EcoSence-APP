@@ -1,5 +1,6 @@
 import flet as ft
-#from components.login_page import login_page
+from components.appbar import appbar as appbar
+from components.login import login as login
 
 def main(page: ft.Page):
     page.title = "EcoSense"
@@ -11,6 +12,6 @@ def main(page: ft.Page):
     page.theme = ft.Theme(color_scheme_seed="green")
     page.update()
 
-    page.add()
+    page.add(login)
 
-ft.app(target=main)
+ft.app(target=main, assets_dir="assets")
