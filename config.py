@@ -280,7 +280,7 @@ class cnt_params(ft.Container):
         None.
     """
 
-    def __init__(self):
+    def __init__(self, temp_current, humd_current, tier_current, luz_current):
         super().__init__()
         self.content = ft.Container(
             content=ft.Column(
@@ -288,10 +288,10 @@ class cnt_params(ft.Container):
                     # Contenedor responsivo de los parámetros
                     ft.ResponsiveRow(
                         controls=[
-                            rrw_cnt_params("temperatura", 25),
-                            rrw_cnt_params("humedad", 50),
-                            rrw_cnt_params("tierra", 50),
-                            rrw_cnt_params("luz", 50),
+                            rrw_cnt_params("temperatura", temp_current),
+                            rrw_cnt_params("humedad", humd_current),
+                            rrw_cnt_params("tierra", tier_current),
+                            rrw_cnt_params("luz", luz_current),
                         ],
                         columns=4,
                         alignment=ft.MainAxisAlignment.CENTER,
@@ -335,14 +335,9 @@ class cnt_stats(ft.Container):
                         )
                     ),
                     # 2da fila con el gráfico
-                    ft.Container(
-                        content=chart,
-                        adaptive=True,
-                        height=270,
-                        padding=10
-                    ),
+                    ft.Container(content=chart, adaptive=True, height=270, padding=10),
                 ],
-                #width=350,
+                # width=350,
             ),
             padding=10,
         )
@@ -368,6 +363,7 @@ class cnts_stats_page(ft.Container):
         self,
         parametro: t.Literal["cultivo", "sistema", "parámetros", "estadísticas"],
         ctn_contenido=None,
+        current = None
     ):
         # Definimos el título, el icono y el contenido correspondiente
         if parametro == "cultivo":
@@ -383,7 +379,12 @@ class cnts_stats_page(ft.Container):
         elif parametro == "parámetros":
             titulo = "Información de los Parámetros"
             icono = ft.icons.LIST_ALT
-            ctn_contenido = cnt_params()
+            ctn_contenido = cnt_params(
+                temp_current=current["temperatura"],
+                humd_current=current["humedad"],
+                tier_current=current["tierra"],
+                luz_current=current["luz"],
+            )
 
         elif parametro == "estadísticas":
             titulo = "Información de las Estadísticas"
