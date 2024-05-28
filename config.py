@@ -376,16 +376,6 @@ class cnts_stats_page(ft.Container):
             icono = ft.icons.BUILD
             ctn_contenido = cnt_system()
 
-        elif parametro == "parámetros":
-            titulo = "Información de los Parámetros"
-            icono = ft.icons.LIST_ALT
-            ctn_contenido = cnt_params(
-                temp_current=current["temperatura"],
-                humd_current=current["humedad"],
-                tier_current=current["tierra"],
-                luz_current=current["luz"],
-            )
-
         elif parametro == "estadísticas":
             titulo = "Información de las Estadísticas"
             icono = ft.icons.SATELLITE_SHARP
@@ -397,7 +387,7 @@ class cnts_stats_page(ft.Container):
             ctn_contenido.padding = 10
             ctn_contenido.border_radius = 10
             ctn_contenido.alignment = ft.alignment.center
-            ctn_contenido.bgcolor = ft.colors.GREEN_600
+            ctn_contenido.bgcolor = ft.colors.BLUE_GREY_800
             ctn_contenido.adaptive = True
 
         # Inicializamos el contenedor
@@ -407,7 +397,7 @@ class cnts_stats_page(ft.Container):
                 # Fila con el icono y el titulo
                 ft.Container(
                     content=rw1_cnt_gral_stats(titulo, icono),
-                    bgcolor=ft.colors.GREEN_600,
+                    bgcolor=ft.colors.BLUE_GREY_800,
                     border_radius=10,
                 ),
                 # Contenido correspondiente
@@ -418,12 +408,12 @@ class cnts_stats_page(ft.Container):
         )
 
         # Establecemos las propiedades del contenedor
-        self.width = 500
+        self.width = 400
         self.height = 470
         self.alignment = ft.alignment.center
-        self.padding = 15
+        self.padding = 20
         self.border_radius = 10
-        self.bgcolor = ft.colors.BLUE
+        self.bgcolor = ft.colors.GREEN_600
         self.adaptive = True
         self.margin = 10
 

@@ -16,9 +16,11 @@ def on_message(client, userdata, msg):
         if topico == "sensor/DHT11":
             archivo = "datos_DHT11.csv"
             encabezado = ["Fecha", "Hora", "Temperatura", "Humedad"]
+
         elif topico == "sensor/HD38":
             archivo = "datos_HD38.csv"
             encabezado = ["Fecha", "Hora", "Humedad"]
+            
         else:
             return
 
