@@ -11,7 +11,7 @@ from datetime import datetime
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    filename="log/app.log",
+    filename="registros/app.log",
     filemode="a",
 )
 
@@ -113,7 +113,7 @@ def registrar_dht11_csv():
 def registrar_hd38_csv():
     # Registrar valores del sensor HD38
     ahora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open('hd38_data.csv', mode='a', newline='') as archivo_hd38:
+    with open('database/hd38_data.csv', mode='a', newline='') as archivo_hd38:
         escritor_hd38 = csv.writer(archivo_hd38)
         escritor_hd38.writerow([ahora, environment_values['tier']])
         logging.info('Se ha registrado un nuevo valor en hd38_data.csv')
