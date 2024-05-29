@@ -285,7 +285,7 @@ def main(page: Page):
 
     ###############################################################
     # Configuración del cliente MQTT ###############################################################################
-    broker = "192.168.0.9"  # Dirección IP de tu computadora
+    broker = "192.168.117.90"  # Dirección IP de tu computadora
     client = mqtt.Client()  # Crear un cliente MQTT
     client.on_message = on_message  # Configuración de callbacks
     mqtt_connect(client)  # Conectar al broker MQTT
