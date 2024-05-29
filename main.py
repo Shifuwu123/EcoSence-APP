@@ -105,7 +105,7 @@ toggle_row = ft.Row(
 def registrar_dht11_csv():
     # Registrar valores del sensor DHT11
     ahora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open('dht11_data.csv', mode='a', newline='') as archivo_dht11:
+    with open("database/dht11_data.csv", mode='a', newline='') as archivo_dht11:
         escritor_dht11 = csv.writer(archivo_dht11)
         escritor_dht11.writerow([ahora, environment_values['temp'], environment_values['humd']])
         logging.info('Se ha registrado un nuevo valor en dht11_data.csv')

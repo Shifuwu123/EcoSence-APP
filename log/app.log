@@ -11012,3 +11012,149 @@ SystemExit: 1
 2024-05-29 00:57:39,805 - DEBUG - page.on_event_async: page app_lifecycle_state_change inactive
 2024-05-29 00:57:39,814 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"720.0","windowheight":"720.0","windowtop":"120.0","windowleft":"438.0","windowminimized":"false","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]}}
 2024-05-29 00:57:39,815 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"720.0","windowheight":"720.0","windowtop":"120.0","windowleft":"438.0","windowminimized":"false","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]
+2024-05-29 00:57:39,817 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"blur"}}
+2024-05-29 00:57:39,818 - DEBUG - page.on_event_async: page window_event blur
+2024-05-29 00:58:09,778 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.3, "temp": 18.6}'
+2024-05-29 00:58:09,778 - DEBUG - _process_command: set ['_13'] {'value': '18.6 °C'}
+2024-05-29 00:58:09,778 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_13","value":"18.6 \u00b0C"}]}}]}
+2024-05-29 00:58:09,778 - DEBUG - _process_command: set ['_17'] {'value': '61.3 %'}
+2024-05-29 00:58:09,779 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_17","value":"61.3 %"}]}}]}
+2024-05-29 00:58:09,779 - DEBUG - sent to TCP: 135
+2024-05-29 00:58:09,780 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:58:09,780 - DEBUG - sent to TCP: 129
+2024-05-29 00:58:10,284 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:58:10,285 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:58:10,791 - INFO - ### Mensaje recibido en EcoSense/esp32/rele1: b'{"rele1": "0"}'
+2024-05-29 00:58:10,791 - INFO - # Rele1 actualizado
+2024-05-29 00:58:11,786 - INFO - ### Mensaje recibido en EcoSense/esp32/rele2: b'{"rele2": "0"}'
+2024-05-29 00:58:11,786 - DEBUG - _process_command: set ['_30'] {'value': 'Apagado'}
+2024-05-29 00:58:11,786 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_30","value":"Apagado"}]}}]}
+2024-05-29 00:58:11,786 - INFO - # Rele2 actualizado
+2024-05-29 00:58:11,787 - DEBUG - sent to TCP: 130
+2024-05-29 00:58:18,835 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"app_lifecycle_state_change","eventData":"resume"}}
+2024-05-29 00:58:18,836 - DEBUG - page.on_event_async: page app_lifecycle_state_change resume
+2024-05-29 00:58:18,853 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"720.0","windowheight":"720.0","windowtop":"120.0","windowleft":"438.0","windowminimized":"false","windowmaximized":"false","windowfocused":"true","windowfullscreen":"false"}]}}
+2024-05-29 00:58:18,853 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"720.0","windowheight":"720.0","windowtop":"120.0","windowleft":"438.0","windowminimized":"false","windowmaximized":"false","windowfocused":"true","windowfullscreen":"false"}]
+2024-05-29 00:58:18,855 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"focus"}}
+2024-05-29 00:58:18,855 - DEBUG - page.on_event_async: page window_event focus
+2024-05-29 00:58:18,887 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"_4","eventName":"click","eventData":""}}
+2024-05-29 00:58:18,887 - DEBUG - page.on_event_async: _4 click 
+2024-05-29 00:58:18,888 - INFO - ## Mensaje enviado a esp32: {"feedback": true}
+2024-05-29 00:58:18,998 - INFO - ### Mensaje recibido en EcoSense/esp32/rele1: b'{"rele1": "0"}'
+2024-05-29 00:58:19,000 - INFO - # Rele1 actualizado
+2024-05-29 00:58:20,002 - INFO - ### Mensaje recibido en EcoSense/esp32/rele2: b'{"rele2": "0"}'
+2024-05-29 00:58:20,003 - INFO - # Rele2 actualizado
+2024-05-29 00:58:21,005 - INFO - ### Mensaje recibido en EcoSense/esp32/sensores: b'{"tier": 4095, "humd": 61.3, "temp": 18.6}'
+2024-05-29 00:58:21,006 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:58:21,008 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:58:21,010 - INFO - Se han registrado todos los valores en archivos CSV
+2024-05-29 00:58:24,719 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"_31","eventName":"click","eventData":""}}
+2024-05-29 00:58:24,719 - DEBUG - page.on_event_async: _31 click 
+2024-05-29 00:58:24,719 - INFO - ## Rele de EXTRUSOR alternado MANUALMENTE a: 0
+2024-05-29 00:58:24,720 - DEBUG - _process_command: set ['_30'] {'value': 'Encendido'}
+2024-05-29 00:58:24,720 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_30","value":"Encendido"}]}}]}
+2024-05-29 00:58:24,720 - DEBUG - sent to TCP: 132
+2024-05-29 00:58:24,720 - INFO - ## Mensaje enviado a esp32: {"rele2": true}
+2024-05-29 00:58:24,908 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.3, "temp": 18.6}'
+2024-05-29 00:58:24,911 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:58:25,726 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:58:25,726 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:58:28,918 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"_28","eventName":"click","eventData":""}}
+2024-05-29 00:58:28,919 - DEBUG - page.on_event_async: _28 click 
+2024-05-29 00:58:28,919 - INFO - ## Rele de VENTILADOR alternado MANUALMENTE a: 0
+2024-05-29 00:58:28,920 - DEBUG - _process_command: set ['_27'] {'value': 'Encendido'}
+2024-05-29 00:58:28,920 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_27","value":"Encendido"}]}}]}
+2024-05-29 00:58:28,920 - DEBUG - sent to TCP: 132
+2024-05-29 00:58:28,921 - INFO - ## Mensaje enviado a esp32: {"rele1": true}
+2024-05-29 00:58:29,616 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"_31","eventName":"click","eventData":""}}
+2024-05-29 00:58:29,616 - DEBUG - page.on_event_async: _31 click 
+2024-05-29 00:58:29,617 - INFO - ## Rele de EXTRUSOR alternado MANUALMENTE a: True
+2024-05-29 00:58:29,617 - DEBUG - _process_command: set ['_30'] {'value': 'Apagado'}
+2024-05-29 00:58:29,618 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_30","value":"Apagado"}]}}]}
+2024-05-29 00:58:29,619 - INFO - ## Mensaje enviado a esp32: {"rele2": false}
+2024-05-29 00:58:29,619 - DEBUG - sent to TCP: 130
+2024-05-29 00:58:31,458 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"app_lifecycle_state_change","eventData":"inactive"}}
+2024-05-29 00:58:31,458 - DEBUG - page.on_event_async: page app_lifecycle_state_change inactive
+2024-05-29 00:58:31,465 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"720.0","windowheight":"720.0","windowtop":"120.0","windowleft":"438.0","windowminimized":"false","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]}}
+2024-05-29 00:58:31,466 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"720.0","windowheight":"720.0","windowtop":"120.0","windowleft":"438.0","windowminimized":"false","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]
+2024-05-29 00:58:31,472 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"blur"}}
+2024-05-29 00:58:31,473 - DEBUG - page.on_event_async: page window_event blur
+2024-05-29 00:58:40,488 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.4, "temp": 18.6}'
+2024-05-29 00:58:40,488 - DEBUG - _process_command: set ['_17'] {'value': '61.4 %'}
+2024-05-29 00:58:40,490 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_17","value":"61.4 %"}]}}]}
+2024-05-29 00:58:40,494 - DEBUG - sent to TCP: 129
+2024-05-29 00:58:40,495 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:58:41,566 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:58:41,568 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:58:56,696 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.4, "temp": 18.6}'
+2024-05-29 00:58:56,697 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:58:57,466 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:58:57,467 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:59:12,269 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.4, "temp": 18.6}'
+2024-05-29 00:59:12,270 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:59:13,328 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:59:13,329 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:59:28,108 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.4, "temp": 18.6}'
+2024-05-29 00:59:28,109 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:59:28,832 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:59:28,832 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:59:40,701 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"app_lifecycle_state_change","eventData":"resume"}}
+2024-05-29 00:59:40,703 - DEBUG - page.on_event_async: page app_lifecycle_state_change resume
+2024-05-29 00:59:40,794 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"app_lifecycle_state_change","eventData":"inactive"}}
+2024-05-29 00:59:40,797 - DEBUG - page.on_event_async: page app_lifecycle_state_change inactive
+2024-05-29 00:59:40,818 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]}}
+2024-05-29 00:59:40,819 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]
+2024-05-29 00:59:40,820 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"focus"}}
+2024-05-29 00:59:40,821 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]}}
+2024-05-29 00:59:40,822 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"minimize"}}
+2024-05-29 00:59:40,826 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]}}
+2024-05-29 00:59:40,828 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"blur"}}
+2024-05-29 00:59:40,828 - DEBUG - page.on_event_async: page window_event focus
+2024-05-29 00:59:40,830 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]
+2024-05-29 00:59:40,832 - DEBUG - page.on_event_async: page window_event minimize
+2024-05-29 00:59:40,836 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"false","windowfullscreen":"false"}]
+2024-05-29 00:59:40,837 - DEBUG - page.on_event_async: page window_event blur
+2024-05-29 00:59:40,856 - DEBUG - _on_message: {"action":"updateControlProps","payload":{"props":[{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"true","windowfullscreen":"false"}]}}
+2024-05-29 00:59:40,858 - DEBUG - page.on_event_async: page change [{"i":"page","windowwidth":"160.0","windowheight":"28.0","windowtop":"-32000.0","windowleft":"-32000.0","windowminimized":"true","windowmaximized":"false","windowfocused":"true","windowfullscreen":"false"}]
+2024-05-29 00:59:40,879 - DEBUG - _on_message: {"action":"pageEventFromWeb","payload":{"eventTarget":"page","eventName":"window_event","eventData":"blur"}}
+2024-05-29 00:59:40,881 - DEBUG - page.on_event_async: page window_event blur
+2024-05-29 00:59:43,406 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.4, "temp": 18.6}'
+2024-05-29 00:59:43,407 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:59:44,081 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:59:44,082 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 00:59:58,670 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.4, "temp": 18.6}'
+2024-05-29 00:59:58,673 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 00:59:59,340 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 00:59:59,341 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 01:00:14,088 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.3, "temp": 18.6}'
+2024-05-29 01:00:14,091 - DEBUG - _process_command: set ['_17'] {'value': '61.3 %'}
+2024-05-29 01:00:14,091 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_17","value":"61.3 %"}]}}]}
+2024-05-29 01:00:14,092 - DEBUG - sent to TCP: 129
+2024-05-29 01:00:14,093 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 01:00:14,802 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 01:00:14,803 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 01:00:29,688 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.3, "temp": 18.6}'
+2024-05-29 01:00:29,690 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 01:00:30,325 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 01:00:30,326 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 01:00:45,122 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.3, "temp": 18.7}'
+2024-05-29 01:00:45,124 - DEBUG - _process_command: set ['_13'] {'value': '18.7 °C'}
+2024-05-29 01:00:45,125 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_13","value":"18.7 \u00b0C"}]}}]}
+2024-05-29 01:00:45,126 - DEBUG - sent to TCP: 135
+2024-05-29 01:00:45,126 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 01:00:45,900 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 01:00:45,902 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 01:01:00,519 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.3, "temp": 18.7}'
+2024-05-29 01:01:00,520 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 01:01:01,070 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 01:01:01,072 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
+2024-05-29 01:01:15,652 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/dht11: b'{"humd": 61.2, "temp": 18.6}'
+2024-05-29 01:01:15,653 - DEBUG - _process_command: set ['_13'] {'value': '18.6 °C'}
+2024-05-29 01:01:15,655 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_13","value":"18.6 \u00b0C"}]}}]}
+2024-05-29 01:01:15,656 - DEBUG - _process_command: set ['_17'] {'value': '61.2 %'}
+2024-05-29 01:01:15,657 - DEBUG - sent to TCP: 135
+2024-05-29 01:01:15,657 - DEBUG - __send: {"action":"pageControlsBatch","payload":[{"action":"updateControlProps","payload":{"props":[{"i":"_17","value":"61.2 %"}]}}]}
+2024-05-29 01:01:15,658 - DEBUG - sent to TCP: 129
+2024-05-29 01:01:15,659 - INFO - Se ha registrado un nuevo valor en dht11_data.csv
+2024-05-29 01:01:16,351 - INFO - ### Mensaje recibido en EcoSense/esp32/sensor/hd38: b'{"tier": 4095}'
+2024-05-29 01:01:16,352 - INFO - Se ha registrado un nuevo valor en hd38_data.csv
