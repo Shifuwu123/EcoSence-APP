@@ -142,9 +142,9 @@ def main(page: Page):
     ################################################################################
     # Funciones auxiliares
     def actualizar_app(e):
-        client.publish("EcoSense/plc/actualizacion", json.dumps({"feedback": True}))
-        logging.info(f"## Mensaje enviado a esp32: {json.dumps({'feedback': True})}")
-
+            client.publish("EcoSense/plc/actualizacion", json.dumps({"feedback": True})),
+            logging.info(f"## Mensaje enviado a esp32: {json.dumps({'feedback': True})}")
+    
     def toggle_fan(e):
         global reles_values
         logging.info(f"## Rele de VENTILADOR alternado MANUALMENTE a: {reles_values['fan']}")
@@ -318,6 +318,29 @@ def main(page: Page):
     page.theme = ft.Theme(color_scheme_seed="green")
     page.window_always_on_top = True
 
+    # Direccionador de rutas de la aplicación
+    def route_change(route):
+        # CARGA DE PAGINAS
+        from page.home import home
+        from page.configuraciones import configuracion
+
+        page.views.clear()
+        page.views.append(ft.View("/", home()))
+
+        # RUTAS
+        if page.route == "/configuration":
+            page.views.append(ft.View("/configuration", configuracion()))
+
+        # ACTUALIZAR PAGINA
+        page.update()
+
+    # Cambio de ventana
+    def view_pop(view):
+        page.views.pop()
+        top_view = page.views[-1]
+        page.go(top_view.route)
+
+
     ###############################################################
     # Variables globales de la pagina #############################################################################
 
@@ -379,30 +402,22 @@ def main(page: Page):
 
     ###############################################################
     # Agregar datos a la pagina ############################################################################
-
-    page.add(
-        # Appbar de la pagina principal
-        ft.AppBar(
-            title=ft.Text("Estadísticas 🗃️"),
-            bgcolor=ft.colors.with_opacity(0.04, ft.colors.TEAL_ACCENT_400),
-            actions=[
-                ft.IconButton(
-                    icon=ft.icons.ENERGY_SAVINGS_LEAF,
-                    padding=15,
-                    on_click=actualizar_app,
-                ),
-            ],
-            ),
-        # Vista de la pagina principal
-        ft.ListView(
-            controls=[
-                fr_row,
-                sc_row,
-            ],
-            expand=1,
-            spacing=10,
-        ),
-    )
+    # CARGA DE PAGINAS
+    #page.on_route_change = route_change
+    #page.on_view_pop = view_pop
+    #page.go(page.route)
+    
+    from page.funcional_mqtt import conexión_mqtt
+    page_home = conexión_mqtt()
+    appbar = page_home[0]
+    appbar.actions.append(ft.IconButton(icon=ft.icons.ENERGY_SAVINGS_LEAF, padding=15, on_click=actualizar_app))
+    
+    safearea = page_home[1]
+    safearea.controls.append(fr_row)
+    safearea.controls.append(sc_row)
+    
+    page.add(appbar, safearea)
+    
     """ Fin Agregar datos a la pagina """
 
 
