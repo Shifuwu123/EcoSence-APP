@@ -1,7 +1,5 @@
 import flet as ft, typing as t
 from graph_config import *
-from data_test import *
-
 
 ################################################################################
 # Filas de Contenedores de Parametros

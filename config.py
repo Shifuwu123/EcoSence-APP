@@ -47,96 +47,42 @@ class rw1_cnt_gral_stats(ft.Row):
         super().__init__()
         self.controls = [
             # Icono y titulo del contenedor de Estadísticas Generales
-            ft.Icon(name=icono, size=28),
+            ft.Icon(name=icono, size=25),
             ft.Text(
                 value=titulo,
-                width=200,
+                width=210,
                 size=15,
                 text_align=ft.TextAlign.CENTER,
+                no_wrap=True,
             ),
         ]
         self.alignment = ft.MainAxisAlignment.SPACE_EVENLY
-        self.width = 380
-        self.height = 55
+        self.width = 350
+        self.height = 40
         self.vertical_alignment = ft.CrossAxisAlignment.CENTER
 
 
-class rrw_cnt_system(ft.ResponsiveRow):
-    def __init__(
-        self,
-        # Parámetros
-        actuador: t.Literal[
-            "luces",
-            "ventilador",
-            "extractor",
-            "bomba",
-        ],
-        estado: bool,
-        icono: type = ft.icons.CHECK,
-    ):
-        # Inicializamos la fila responsiva
-        super().__init__()
-        self.controls = [
-            # Actuador
-            ft.TextField(
-                label=actuador,
-                value="Activado" if estado else "Desactivado",
-                read_only=True,
-                col=9,
-                text_align=ft.TextAlign.CENTER,
-            ),
-            # Estado del actuador e icono animado
-            ft.Container(
-                content=ft.Icon(
-                    name=icono,
-                ),
-                col=3,
-                height=60,
-            ),
-        ]
-        self.alignment = ft.MainAxisAlignment.SPACE_EVENLY
-        self.width = 380
-        self.columns = 12
-
-
 class rrw_cnt_params(ft.ResponsiveRow):
-    """Contenedor con un parámetro y su valor.
-
-    Este contenedor se encarga de mostrar un parámetro y su valor correspondiente.
-    Los parámetros aceptados son:
-        - luz: se muestra como un porcentaje
-        - humedad: se muestra como un porcentaje
-        - tierra: se muestra como un porcentaje
-        - temperatura: se muestra en grados Celsius
-    """
-
     def __init__(
         self,
-        # Parámetros
-        parametro: t.Literal["luz", "humedad", "tierra", "temperatura"],
-        dato: float,
+        param: t.Literal["temp", "humd", "tier", "lgt_qlty"],
+        txf_value: ft.TextField,
     ):
-        # Definimos el título, el icono y el contenido correspondiente
-        if parametro == "luz":
-            parametro = "Calidad de luz: "
-            tipo_dato = "%"
-
-        elif parametro == "humedad":
-            parametro = "Humedad: "
-            tipo_dato = "%"
-
-        elif parametro == "tierra":
-            parametro = "Humedad de la tierra: "
-            tipo_dato = "%"
-
-        elif parametro == "temperatura":
+        if param == "temp":
             parametro = "Temperatura: "
             tipo_dato = "°C"
 
+        elif param == "humd":
+            parametro = "Humedad: "
+            tipo_dato = "%"
+
+        elif param == "tier":
+            parametro = "Humedad de la tierra: "
+            tipo_dato = "%"
+
         # Inicializamos la fila responsiva
         super().__init__()
         self.controls = [
-            # Parametro
             ft.TextField(
                 value=parametro,
                 text_align=ft.TextAlign.CENTER,
@@ -147,32 +93,43 @@ class rrw_cnt_params(ft.ResponsiveRow):
                 col=6,
                 border_width=0,
                 color=ft.colors.WHITE,
-            ),
-            # Valor REAL del parametro
+            ),  # Parametro
+            txf_value,  # Valor REAL del parametro
             ft.TextField(
-                value=f"{dato} {tipo_dato}",
-                label="Real",
-                text_size=13,
-                multiline=True,
-                read_only=True,
-                col=3,
-                text_align=ft.TextAlign.CENTER,
-            ),
-            # Valor IDEAL del parametro
-            ft.TextField(
-                value=f"{dato} {tipo_dato}",
+                value=f"20 {tipo_dato}",
                 label="Ideal",
                 text_size=13,
                 multiline=True,
                 read_only=True,
                 col=3,
                 text_align=ft.TextAlign.CENTER,
-            ),
+            ),  # Valor IDEAL del parametro
         ]
         self.alignment = ft.MainAxisAlignment.CENTER
         self.vertical_alignment = ft.CrossAxisAlignment.CENTER
         self.col = 4
         self.width = 380
+        self.columns = 12
+
+
+class rrw_cnt_system(ft.ResponsiveRow):
+    def __init__(
+        self,
+        rele,
+        button: ft.ElevatedButton,
+    ):
+        # Inicializamos la fila responsiva
+        super().__init__()
+        self.controls = [
+            # Actuador
+            rele,
+            # Estado del actuador e icono animado
+            button,
+        ]
+        self.alignment = ft.MainAxisAlignment.SPACE_EVENLY
+        self.vertical_alignment = ft.CrossAxisAlignment.CENTER
+        self.width = 380
+        self.height = 60
         self.columns = 12
 
 
@@ -237,71 +194,80 @@ class cnt_crop(ft.Container):
         )
 
 
-class cnt_system(ft.Container):
-    """Contenedor con información de los dispositivos de control asociados al
-    cultivo.
-
-    Este contenedor se encarga de mostrar la información correspondiente al
-    estado de los dispositivos de control asociados al cultivo seleccionado por
-    el usuario en la sección de estadísticas.
-
-    Attributes:
-        None.
-    """
-
-    def __init__(self):
-        super().__init__()
-        self.content = ft.Container(
-            content=ft.Column(
-                # Contenedor responsivo de los parámetros
-                controls=[
-                    rrw_cnt_system("Luces:", True, ft.icons.LIGHT_MODE),
-                    rrw_cnt_system("Ventilador:", False, ft.icons.MODE_FAN_OFF_ROUNDED),
-                    rrw_cnt_system("Extractor:", True, ft.icons.AIR),
-                    rrw_cnt_system("Bomba:", False, ft.icons.WATER_DROP),
-                ],
-                width=350,
-            ),
-            padding=10,
-        )
-
-
 class cnt_params(ft.Container):
-    """Contenedor con información de los parámetros del cultivo.
-
-    Este contenedor se encarga de mostrar información sobre los parámetros
-    del cultivo:
-        - Temperatura
-        - Humedad del aire
-        - Humedad del suelo
-        - Nivel de tierra
-
-    Attributes:
-        None.
-    """
-
-    def __init__(self, temp_current, humd_current, tier_current, luz_current):
+    def __init__(self, temp_value, humd_value, tier_value):
         super().__init__()
-        self.content = ft.Container(
-            content=ft.Column(
-                controls=[
-                    # Contenedor responsivo de los parámetros
-                    ft.ResponsiveRow(
-                        controls=[
-                            rrw_cnt_params("temperatura", temp_current),
-                            rrw_cnt_params("humedad", humd_current),
-                            rrw_cnt_params("tierra", tier_current),
-                            rrw_cnt_params("luz", luz_current),
-                        ],
-                        columns=4,
-                        alignment=ft.MainAxisAlignment.CENTER,
-                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        self.content = ft.Column(
+            controls=[
+                ft.Container(
+                    content=rw1_cnt_gral_stats(
+                        titulo="Información de los parámetros",
+                        icono=ft.icons.SATELLITE_SHARP,
                     ),
-                ],
-                width=350,
-            ),
-            padding=10,
+                    padding=10,
+                    bgcolor=ft.colors.BLUE_GREY_800,
+                    border_radius=10,
+                ),
+                ft.Container(
+                    content=ft.Column(
+                        controls=[
+                            ft.ResponsiveRow(
+                                controls=[
+                                    rrw_cnt_params(param="temp", txf_value=temp_value),
+                                    rrw_cnt_params(param="humd", txf_value=humd_value),
+                                    rrw_cnt_params(param="tier", txf_value=tier_value),
+                                ],
+                                columns=4,
+                                alignment=ft.MainAxisAlignment.CENTER,
+                                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                            ),
+                        ],
+                        width=350,
+                    ),
+                    padding=10,
+                    bgcolor=ft.colors.BLUE_GREY_800,
+                    border_radius=10,
+                ),
+            ]
         )
+        self.bgcolor = ft.colors.GREEN_600
+        self.padding = 20
+        self.border_radius = 10
+
+
+class cnt_system(ft.Container):
+    def __init__(self, buttons: dict, values: dict, botones):
+        super().__init__()
+        self.content = ft.Column(
+            controls=[
+                ft.Container(
+                    content=rw1_cnt_gral_stats(
+                        titulo="Información del sistema",
+                        icono=ft.icons.BUILD,
+                    ),
+                    padding=10,
+                    bgcolor=ft.colors.BLUE_GREY_800,
+                    border_radius=10,
+                ),
+                ft.Container(
+                    content=ft.Column(
+                        # Contenedor responsivo de los parámetros
+                        controls=[
+                            rrw_cnt_system(values["fan"], buttons["btn_fan"]),
+                            rrw_cnt_system(values["extrc"], buttons["btn_extrc"]),
+                            botones,
+                        ],
+                        width=350,
+                    ),
+                    padding=10,
+                    bgcolor=ft.colors.BLUE_GREY_800,
+                    border_radius=10,
+                ),
+            ]
+        )
+        self.bgcolor = ft.colors.GREEN_600
+        self.padding = 20
+        self.border_radius = 10
 
 
 class cnt_stats(ft.Container):
@@ -363,7 +329,7 @@ class cnts_stats_page(ft.Container):
         self,
         parametro: t.Literal["cultivo", "sistema", "parámetros", "estadísticas"],
         ctn_contenido=None,
-        current = None
+        current=None,
     ):
         # Definimos el título, el icono y el contenido correspondiente
         if parametro == "cultivo":
@@ -416,6 +382,7 @@ class cnts_stats_page(ft.Container):
         self.bgcolor = ft.colors.GREEN_600
         self.adaptive = True
         self.margin = 10
+        self.col = 1
 
 
 """ Fin Contenedor de Estadísticas """

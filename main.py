@@ -77,12 +77,25 @@ txf_extrc = ft.TextField(
 )
 
 """ Filas de Contenedores de Sistema """
-from config_test import cnt_params as parametros_values
-from config_test import cnt_system as system_values
+from config import cnt_params as parametros_values
+from config import cnt_system as system_values
+from config import cnts_stats_page as cnt_old
 
 fr_row = ft.Row(
     controls=[
+        cnt_old(parametro="cultivo"),
+    ],
+    alignment=ft.MainAxisAlignment.CENTER,
+    wrap=True,
+    spacing=15,
+    run_spacing=5,
+    width=None,
+)
+
+sc_row = ft.Row(
+    controls = [
         parametros_values(txf_temp_value, txf_humd_value, txf_tier_value),
+        cnt_old(parametro="estadísticas"),
     ],
     alignment=ft.MainAxisAlignment.CENTER,
     wrap=True,
@@ -133,6 +146,7 @@ def main(page: Page):
         logging.info(f"## Mensaje enviado a esp32: {json.dumps({'feedback': True})}")
 
     def toggle_fan(e):
+        global reles_values
         logging.info(f"## Rele de VENTILADOR alternado MANUALMENTE a: {reles_values['fan']}")
         reles_values["fan"] = not reles_values["fan"]
         txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"     
@@ -141,6 +155,7 @@ def main(page: Page):
         logging.info(f"## Mensaje enviado a esp32: {json.dumps({'rele1': reles_values['fan']})}")
 
     def toggle_extrc(e):
+        global reles_values
         logging.info(f"## Rele de EXTRUSOR alternado MANUALMENTE a: {reles_values['extrc']}")
         reles_values['extrc'] = not reles_values['extrc']
         txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
@@ -222,7 +237,7 @@ def main(page: Page):
 
                 txf_temp_value.value = f"{environment_values['temp']} °C"
                 txf_humd_value.value = f"{environment_values['humd']} %"
-                txf_tier_value.value = f"{environment_values['tier']} %"
+                txf_tier_value.value = f"{environment_values['tier']}"
                 txf_tier_value.update()
                 txf_temp_value.update()
                 txf_humd_value.update()
@@ -249,7 +264,7 @@ def main(page: Page):
         elif topico == "EcoSense/esp32/sensor/hd38":
             try:
                 environment_values['tier'] = float(mensaje["tier"])
-                txf_tier_value.value = f"{environment_values['tier']} %"
+                txf_tier_value.value = f"{environment_values['tier']}"
                 txf_tier_value.update()
                 
                 registrar_hd38_csv()
@@ -285,7 +300,7 @@ def main(page: Page):
 
     ###############################################################
     # Configuración del cliente MQTT ###############################################################################
-    broker = "192.168.117.90"  # Dirección IP de tu computadora
+    broker = "192.168.0.9"  # Dirección IP de tu computadora
     client = mqtt.Client()  # Crear un cliente MQTT
     client.on_message = on_message  # Configuración de callbacks
     mqtt_connect(client)  # Conectar al broker MQTT
@@ -312,43 +327,53 @@ def main(page: Page):
         icon=ft.icons.LIGHT_MODE,
         col=3,
         on_click=toggle_fan,
+        tooltip="Alternar VENTILADOR",
     )
     btn_extrc = ft.IconButton(
         icon=ft.icons.MODE_FAN_OFF_ROUNDED,
         col=3,
         on_click=toggle_extrc,
+        tooltip="Alternar EXTRACTOR",
     )
 
     btn_toggle = ft.IconButton(
         icon=ft.icons.MODE_FAN_OFF_ROUNDED,
         col=3,
         on_click=toggle_reles,
+        tooltip="Alternar todos los reles",
     )
     btn_off = ft.IconButton(
         icon=ft.icons.POWER_OFF,
         col=3,
         on_click=off_reles,
+        tooltip="Apagar todos los reles",
     )
     btn_on = ft.IconButton(
         icon=ft.icons.POWER,
         col=3,
         on_click=on_reles,
+        tooltip="Encender todos los reles",
     )
     
     btns = {"btn_fan": btn_fan, "btn_extrc": btn_extrc}
 
     # Configuración de la 1RA Fila
-    fr_row.width = page.window_width
-    fr_row.controls.append(system_values(btns, values))
-
-    # Configuración de la 2DA Fila
-    # sc_row.width = page.window_width
-
-    # Configuración de la 3RA Fila
-    toggle_row.width = page.window_width
     toggle_row.controls.append(btn_toggle)
     toggle_row.controls.append(btn_off)
     toggle_row.controls.append(btn_on)
+
+    bts_system = ft.Container(
+        content=toggle_row,
+        padding=5,
+        alignment=ft.alignment.center,
+        border_radius=10,
+    )
+
+    fr_row.width = page.window_width
+    fr_row.controls.append(system_values(btns, values, bts_system))
+
+    # Configuración de la 2DA Fila
+    sc_row.width = page.window_width
 
     """ Fin Variables globales de la pagina """
 
@@ -372,8 +397,7 @@ def main(page: Page):
         ft.ListView(
             controls=[
                 fr_row,
-                toggle_row,
-                # sc_row,
+                sc_row,
             ],
             expand=1,
             spacing=10,
