@@ -1,10 +1,10 @@
 # Librerías App
-import flet as ft, typing as t
+import flet as ft
 from flet import Page
 
 # Librerías de MQTT
 import paho.mqtt.client as mqtt
-import json, time, logging, csv
+import json, logging, csv
 from datetime import datetime
 
 # Configuración del logger
@@ -300,7 +300,7 @@ def main(page: Page):
 
     ###############################################################
     # Configuración del cliente MQTT ###############################################################################
-    broker = "192.168.0.9"  # Dirección IP de tu computadora
+    broker = "192.168.74.90"  # Dirección IP de tu computadora
     client = mqtt.Client()  # Crear un cliente MQTT
     client.on_message = on_message  # Configuración de callbacks
     mqtt_connect(client)  # Conectar al broker MQTT
