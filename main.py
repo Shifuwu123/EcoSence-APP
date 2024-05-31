@@ -4,7 +4,7 @@ from flet import Page
 
 # Librerías de MQTT
 import paho.mqtt.client as mqtt
-import json, logging, csv
+import json, logging, csv, time
 from datetime import datetime
 
 # Configuración del logger
@@ -221,16 +221,18 @@ def main(page: Page):
         topico = msg.topic
         logging.info(f"### Mensaje recibido en {topico}: {msg.payload}")
 
-        # Procesar el mensaje
-        try:
-            mensaje = json.loads(msg.payload)
-        except Exception as e:
-            logging.error(f"## Error al procesar el mensaje: {e}")
-            exit(1)
-
-        # Procesar el topico
-        if topico == "EcoSense/esp32/sensores":
+        # Si la aplicación esta en la pagina principal
+        if page.route == "/app":
             try:
+                # Procesar el mensaje
+                mensaje = json.loads(msg.payload) 
+
+            except Exception as e:
+                logging.error(f"## Error al procesar el mensaje: {e}")
+                return
+
+            # Procesar el topico
+            if topico == "EcoSense/esp32/sensores":
                 environment_values['temp'] = float(mensaje["temp"])
                 environment_values['humd'] = float(mensaje["humd"])
                 environment_values['tier'] = float(mensaje["tier"])
@@ -244,11 +246,7 @@ def main(page: Page):
 
                 registrar_sensores_csv()
 
-            except Exception as e:
-                logging.error(f"## Error al procesar el mensaje '{e}' del topico '{topico}'")
-
-        elif topico == "EcoSense/esp32/sensor/dht11":
-            try:
+            elif topico == "EcoSense/esp32/sensor/dht11":
                 environment_values['temp'] = float(mensaje["temp"])
                 environment_values['humd'] = float(mensaje["humd"])
                 txf_temp_value.value = f"{environment_values['temp']} °C"
@@ -258,49 +256,57 @@ def main(page: Page):
                 
                 registrar_dht11_csv()
 
-            except Exception as e:
-                logging.error(f"## Error al procesar el mensaje '{e}' del topico '{topico}'")
-
-        elif topico == "EcoSense/esp32/sensor/hd38":
-            try:
+            elif topico == "EcoSense/esp32/sensor/hd38":
                 environment_values['tier'] = float(mensaje["tier"])
                 txf_tier_value.value = f"{environment_values['tier']}"
-                txf_tier_value.update()
+                page.update()
                 
                 registrar_hd38_csv()
 
-            except Exception as e:
-                logging.error(f"## Error al procesar el mensaje '{e}' del topico '{topico}'")
+            elif topico == "EcoSense/esp32/rele1":
+                reles_values['fan'] = int(mensaje["rele1"])
+                txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
+                page.update()
 
-        elif topico == "EcoSense/esp32/rele1":
-            # Actualizamos diccionario de reles globales
-            reles_values['fan'] = int(mensaje["rele1"])
-            
-            # Actualizar los valores de la interfaz gráfica
-            txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
-            txf_fan.update()
+                logging.info("# Rele1 actualizado")
 
-            # Registrar la actualización en el archivo de registro
-            logging.info(f"# Rele1 actualizado")
+            elif topico == "EcoSense/esp32/rele2":
+                reles_values['extrc'] = int(mensaje["rele2"])
+                txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
+                page.update()
 
-        elif topico == "EcoSense/esp32/rele2":
-            # Actualizamos diccionario de reles globales
-            reles_values['extrc'] = int(mensaje["rele2"])
+                logging.info("# Rele2 actualizado")
 
-            # Actualizar los valores de la interfaz gráfica
-            txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
-            txf_extrc.update()
+            elif topico == "EcoSense/esp32/feedback":
+                environment_values['temp'] = float(mensaje["temp"])
+                environment_values['humd'] = float(mensaje["humd"])
+                environment_values['tier'] = float(mensaje["tier"])
 
-            # Registrar la actualización en el archivo de registro
-            logging.info(f"# Rele2 actualizado")
+                txf_temp_value.value = f"{environment_values['temp']} °C"
+                txf_humd_value.value = f"{environment_values['humd']} %"
+                txf_tier_value.value = f"{environment_values['tier']}"
 
-        else:
-            logging.warning(f"## Topico no registrado: {topico}")
-            print(f"## Topico no registrado: {topico}")
+                reles_values['fan'] = int(mensaje["rele1"])
+                txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
+                btn_fan.tooltip = "Alternar VENTILADOR"
+                btn_fan.on_click = toggle_fan
+
+                reles_values['extrc'] = int(mensaje["rele2"])
+                txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
+                btn_extrc.tooltip = "Alternar EXTRUSOR"
+                btn_extrc.on_click = toggle_extrc
+
+                page.update()
+
+                logging.info("# Reles y sensores actualizados por feedback")
+
+            else:
+                logging.warning(f"## Topico no registrado: {topico}")
+                print(f"## Topico no registrado: {topico}")
 
     ###############################################################
     # Configuración del cliente MQTT ###############################################################################
-    broker = "192.168.74.90"  # Dirección IP de tu computadora
+    broker = "192.168.151.90"  # Dirección IP de tu computadora
     client = mqtt.Client()  # Crear un cliente MQTT
     client.on_message = on_message  # Configuración de callbacks
     mqtt_connect(client)  # Conectar al broker MQTT
@@ -318,29 +324,6 @@ def main(page: Page):
     page.theme = ft.Theme(color_scheme_seed="green")
     page.window_always_on_top = True
 
-    # Direccionador de rutas de la aplicación
-    def route_change(route):
-        # CARGA DE PAGINAS
-        from page.home import home
-        from page.configuraciones import configuracion
-
-        page.views.clear()
-        page.views.append(ft.View("/", home()))
-
-        # RUTAS
-        if page.route == "/configuration":
-            page.views.append(ft.View("/configuration", configuracion()))
-
-        # ACTUALIZAR PAGINA
-        page.update()
-
-    # Cambio de ventana
-    def view_pop(view):
-        page.views.pop()
-        top_view = page.views[-1]
-        page.go(top_view.route)
-
-
     ###############################################################
     # Variables globales de la pagina #############################################################################
 
@@ -349,21 +332,28 @@ def main(page: Page):
     btn_fan = ft.IconButton(
         icon=ft.icons.LIGHT_MODE,
         col=3,
-        on_click=toggle_fan,
-        tooltip="Alternar VENTILADOR",
     )
+    if txf_fan.value == "Unknown":
+        btn_fan.tooltip = "Sin conexión"
+    elif txf_fan.value != "Unknown":
+        btn_fan.on_click = toggle_fan
+        btn_fan.tooltip = txf_fan.value
+        
     btn_extrc = ft.IconButton(
         icon=ft.icons.MODE_FAN_OFF_ROUNDED,
         col=3,
-        on_click=toggle_extrc,
-        tooltip="Alternar EXTRACTOR",
     )
+    if txf_extrc.value == "Unknown":
+        btn_extrc.tooltip = "Sin conexión"
+    elif txf_extrc.value != "Unknown":
+        btn_extrc.on_click = toggle_extrc
+        btn_extrc.tooltip = txf_extrc.value
 
     btn_toggle = ft.IconButton(
         icon=ft.icons.MODE_FAN_OFF_ROUNDED,
         col=3,
-        on_click=toggle_reles,
         tooltip="Alternar todos los reles",
+        on_click=toggle_reles
     )
     btn_off = ft.IconButton(
         icon=ft.icons.POWER_OFF,
@@ -374,10 +364,10 @@ def main(page: Page):
     btn_on = ft.IconButton(
         icon=ft.icons.POWER,
         col=3,
-        on_click=on_reles,
         tooltip="Encender todos los reles",
+        on_click=on_reles
     )
-    
+
     btns = {"btn_fan": btn_fan, "btn_extrc": btn_extrc}
 
     # Configuración de la 1RA Fila
@@ -402,21 +392,79 @@ def main(page: Page):
 
     ###############################################################
     # Agregar datos a la pagina ############################################################################
+    # Direccionador de rutas de la aplicación
+    def route_change(route):
+        # CARGA DE PAGINAS
+        from page.home import home
+        
+        home_page = home()
+        appbar_home_page = home_page[0]
+        btn_config_home_page = home_page[1]
+        btn_config_home_page.on_click = lambda _: page.go("/configuration")
+
+        btn_stats_home_page = home_page[2] 
+        btn_stats_home_page.on_click = lambda _: print("/app")
+
+        from page.funcional_mqtt import conexión_mqtt
+
+        app_page = conexión_mqtt()
+        appbar_app_page = app_page[0]
+        appbar_app_page.actions.append(
+            ft.IconButton(
+                icon=ft.icons.ENERGY_SAVINGS_LEAF, 
+                padding=15, 
+                on_click=actualizar_app,
+            )
+        )
+        
+        safearea_app_page = app_page[1]
+        safearea_app_page.controls.append(fr_row)
+        safearea_app_page.controls.append(sc_row)
+
+        time.sleep(1)
+
+        page.views.clear()
+        page.views.append(ft.View(
+            "/",
+            controls = [
+                appbar_home_page,
+                btn_config_home_page,
+                btn_stats_home_page,
+                ft.IconButton(
+                    icon=ft.icons.APP_SHORTCUT,
+                    on_click=lambda _: page.go("/esp32_online"),
+                )
+            ]
+            )
+        )
+
+        # RUTAS
+        if page.route == "/esp32_online":
+            page.views.append(
+                ft.View(
+                    route="/app",
+                    appbar=appbar_app_page,
+                    controls=safearea_app_page
+                )
+            )
+
+        # ACTUALIZAR PAGINA
+        page.update()
+
+    # Cambio de ventana
+    def view_pop(view):
+        page.views.pop()
+        top_view = page.views[-1]
+        page.go(top_view.route)
+
+    
     # CARGA DE PAGINAS
-    #page.on_route_change = route_change
-    #page.on_view_pop = view_pop
-    #page.go(page.route)
+    page.on_route_change = route_change
+    page.on_view_pop = view_pop
+    page.go(page.route)
+
     
-    from page.funcional_mqtt import conexión_mqtt
-    page_home = conexión_mqtt()
-    appbar = page_home[0]
-    appbar.actions.append(ft.IconButton(icon=ft.icons.ENERGY_SAVINGS_LEAF, padding=15, on_click=actualizar_app))
-    
-    safearea = page_home[1]
-    safearea.controls.append(fr_row)
-    safearea.controls.append(sc_row)
-    
-    page.add(appbar, safearea)
+    #page.add(appbar, safearea)
     
     """ Fin Agregar datos a la pagina """
 

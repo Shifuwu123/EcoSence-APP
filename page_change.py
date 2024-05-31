@@ -1,3 +1,6 @@
+import flet as ft
+
+
 def main(page: ft.Page):
     page.title = "EcoSence"
     page.adaptive = True
@@ -11,28 +14,6 @@ def main(page: ft.Page):
     )
 
     def route_change(route):
-        # BOTONES ###############################################################
-
-        # PAGINAS ##############################################################
-        def home():
-            return [
-                ft.AppBar(
-                    leading=ft.IconButton(
-                        icon=ft.icons.ENERGY_SAVINGS_LEAF,
-                        icon_color=ft.colors.TEAL_600,
-                        padding=ft.padding.all(10),
-                    ),
-                    title=ft.Text("EcoSence"),
-                    bgcolor=ft.colors.with_opacity(0.04, ft.colors.TEAL_ACCENT_400),
-                ),
-                ft.ElevatedButton(
-                    "Configuración", on_click=lambda _: page.go("/configuration")
-                ),
-                ft.ElevatedButton(
-                    "Estadísticas", on_click=lambda _: page.go("/statistics")
-                ),
-            ]
-
         def estadisticas():
             return [
                 # Barra superior
@@ -53,8 +34,13 @@ def main(page: ft.Page):
                     spacing=5,
                     run_spacing=5,
                     controls=[
-                        InfoCropContainer(),
-                        InfoSystemContainer(),
+                        ft.TextField(
+                            value="aqui iria la info del cultivo",
+                        ),
+                        ft.TextField(
+                            value="aqui iria la info del sistema",
+                        ),
+
                     ],
                     width=page.window_width,
                 ),
@@ -64,8 +50,12 @@ def main(page: ft.Page):
                     spacing=5,
                     run_spacing=5,
                     controls=[
-                        InfoSystemContainer(),
-                        InfoCropContainer(),
+                        ft.TextField(
+                            value="aqui iria la info de los parametros",
+                        ),
+                        ft.TextField(
+                            value="aqui iria la info de las estadisticas",
+                        ),
                     ],
                     width=page.window_width,
                 ),
@@ -98,20 +88,10 @@ def main(page: ft.Page):
 
         ##################################################
         # CARGA DE PAGINAS
+        from page.home import home
+
         page.views.clear()
         page.views.append(ft.View("/", home()))
-
-        # TEMA
-        page.theme = ft.Theme(
-            color_scheme=ft.ColorScheme(
-                background=ft.colors.TEAL_ACCENT_400,
-                on_background=ft.colors.TEAL_50,
-                primary=ft.colors.TEAL_ACCENT_700,
-                on_primary=ft.colors.TEAL_50,
-                secondary=ft.colors.TEAL_ACCENT_200,
-                on_secondary=ft.colors.TEAL_50,
-            )
-        )
 
         # RUTAS
         if page.route == "/configuration":
