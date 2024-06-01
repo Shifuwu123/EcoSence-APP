@@ -1,5 +1,5 @@
 import flet as ft
-from page.connections.verificar_wifi import get_network_ssid
+from pages.connections.verificar_wifi import get_network_ssid
 
 ssid = get_network_ssid()
 

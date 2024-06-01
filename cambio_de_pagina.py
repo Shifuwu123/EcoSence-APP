@@ -2,7 +2,7 @@ import flet as ft
 from flet import Page
 
 import paho.mqtt.client as mqtt
-from page.connections.verificacion_mqtt import mqtt_connect
+from pages.connections.verificacion_mqtt import mqtt_connect
 import json
 
 ################################################################################################
@@ -27,6 +27,7 @@ btn_sync = ft.TextButton(
     tooltip="Ir a APP",
     disabled=True,
 )
+
 # - Valores de los sensores
 environment_values = {
     "temp": None,
@@ -201,12 +202,12 @@ def main(page: Page):
 
     ###########################################################################
     def route_change(route):
-        from page.home.home_page import home_page as home
-        from page.app.app import app_page as app
-        from page.components.cultivo import crop_info
-        from page.components.sistema import system_info
-        from page.components.parametros import params_info
-        from page.components.estadisticas import stats_info
+        from pages.home.home_page import home_page as home
+        from pages.app.app import app_page as app
+        from pages.components.cultivo import crop_info
+        from pages.components.sistema import system_info
+        from pages.components.parametros import params_info
+        from pages.components.estadisticas import stats_info
 
         ################################################################################
         # CARGA DE PAGINAS
@@ -221,6 +222,9 @@ def main(page: Page):
             ],
             col=1,
         )
+        btn_sync.on_click = lambda _: page.go("/app_page")
+        btn_sync.disabled = False
+
         btn_next_page = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
             controls=[
