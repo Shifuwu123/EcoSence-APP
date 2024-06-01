@@ -142,11 +142,10 @@ def main(page: Page):
     ################################################################################
     # Funciones auxiliares
     def actualizar_app(e):
-            client.publish("EcoSense/plc/actualizacion", json.dumps({"feedback": True})),
-            logging.info(f"## Mensaje enviado a esp32: {json.dumps({'feedback': True})}")
+        client.publish("EcoSense/plc/actualizacion", json.dumps({"feedback": True})),
+        logging.info(f"## Mensaje enviado a esp32: {json.dumps({'feedback': True})}")
     
     def toggle_fan(e):
-        global reles_values
         logging.info(f"## Rele de VENTILADOR alternado MANUALMENTE a: {reles_values['fan']}")
         reles_values["fan"] = not reles_values["fan"]
         txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"     
@@ -155,7 +154,6 @@ def main(page: Page):
         logging.info(f"## Mensaje enviado a esp32: {json.dumps({'rele1': reles_values['fan']})}")
 
     def toggle_extrc(e):
-        global reles_values
         logging.info(f"## Rele de EXTRUSOR alternado MANUALMENTE a: {reles_values['extrc']}")
         reles_values['extrc'] = not reles_values['extrc']
         txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
@@ -169,8 +167,7 @@ def main(page: Page):
         reles_values['fan'] = not reles_values['fan']
         txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
         txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
-        txf_extrc.update()
-        txf_fan.update()
+        page.update()
         client.publish("EcoSense/plc/reles", json.dumps({"rele1": reles_values["fan"], "rele2": reles_values["extrc"]}))
         logging.info(f"## Mensaje enviado a esp32: {json.dumps({"rele1": reles_values["fan"], "rele2": reles_values["extrc"]})}")
     
@@ -180,8 +177,7 @@ def main(page: Page):
         reles_values['fan'] = False
         txf_extrc.value = "Apagado"
         txf_fan.value = "Apagado"
-        txf_extrc.update()
-        txf_fan.update()
+        page.update()
         client.publish("EcoSense/plc/reles", json.dumps({"rele1": reles_values["fan"], "rele2": reles_values["extrc"]}))
         logging.info(f"## Mensaje enviado a esp32: {json.dumps({"rele1": reles_values["fan"], "rele2": reles_values["extrc"]})}")
 
@@ -204,7 +200,7 @@ def main(page: Page):
 
         except Exception as e:
             logging.error(f"ERROR al conectar al broker MQTT: {e}")
-            exit(1)
+            return False
 
         # Suscribirse a todos los tópicos bajo 'EcoSense/esp32/'
         topic = "EcoSense/esp32/#"
@@ -222,7 +218,7 @@ def main(page: Page):
         logging.info(f"### Mensaje recibido en {topico}: {msg.payload}")
 
         # Si la aplicación esta en la pagina principal
-        if page.route == "/app":
+        if page.route == "/esp32_online":
             try:
                 # Procesar el mensaje
                 mensaje = json.loads(msg.payload) 
@@ -240,9 +236,7 @@ def main(page: Page):
                 txf_temp_value.value = f"{environment_values['temp']} °C"
                 txf_humd_value.value = f"{environment_values['humd']} %"
                 txf_tier_value.value = f"{environment_values['tier']}"
-                txf_tier_value.update()
-                txf_temp_value.update()
-                txf_humd_value.update()
+                page.update()
 
                 registrar_sensores_csv()
 
@@ -251,8 +245,7 @@ def main(page: Page):
                 environment_values['humd'] = float(mensaje["humd"])
                 txf_temp_value.value = f"{environment_values['temp']} °C"
                 txf_humd_value.value = f"{environment_values['humd']} %"
-                txf_temp_value.update()
-                txf_humd_value.update()
+                page.update()
                 
                 registrar_dht11_csv()
 
@@ -304,17 +297,18 @@ def main(page: Page):
                 logging.warning(f"## Topico no registrado: {topico}")
                 print(f"## Topico no registrado: {topico}")
 
-    ###############################################################
+    ##############################################################################
     # Configuración del cliente MQTT ###############################################################################
-    broker = "192.168.151.90"  # Dirección IP de tu computadora
+    broker = "10.6.20.236"  # Dirección IP de tu computadora
     client = mqtt.Client()  # Crear un cliente MQTT
     client.on_message = on_message  # Configuración de callbacks
+
     mqtt_connect(client)  # Conectar al broker MQTT
     actualizar_app(None)  # Solicitar actualizaciones
 
     """ Fin Conexión MQTT """
 
-    ###############################################################
+    ##############################################################################
     # Aspectos generales de la pagina ###############################################################################
     page.title = "EcoSense"
     page.adaptive = True
@@ -395,8 +389,10 @@ def main(page: Page):
     # Direccionador de rutas de la aplicación
     def route_change(route):
         # CARGA DE PAGINAS
-        from page.home import home
-        
+        from page.home.home import home
+        from page.funcional_mqtt import conexión_mqtt
+
+        # Configuracion de de la pagina: HOME
         home_page = home()
         appbar_home_page = home_page[0]
         btn_config_home_page = home_page[1]
@@ -405,8 +401,8 @@ def main(page: Page):
         btn_stats_home_page = home_page[2] 
         btn_stats_home_page.on_click = lambda _: print("/app")
 
-        from page.funcional_mqtt import conexión_mqtt
-
+        
+        # Configuracion de la pagina: Conexión con MQTT
         app_page = conexión_mqtt()
         appbar_app_page = app_page[0]
         appbar_app_page.actions.append(
@@ -421,8 +417,8 @@ def main(page: Page):
         safearea_app_page.controls.append(fr_row)
         safearea_app_page.controls.append(sc_row)
 
-        time.sleep(1)
 
+        time.sleep(1)
         page.views.clear()
         page.views.append(ft.View(
             "/",
