@@ -303,11 +303,11 @@ class cnt_stats(ft.Container):
                     # 2da fila con el gráfico
                     ft.Container(content=chart, adaptive=True, height=270, padding=10),
                 ],
-                # width=350,
             ),
             padding=10,
         )
-        self.bgcolor = ft.colors.LIGHT_GREEN_600
+        self.bgcolor = ft.colors.BLUE_GREY_600
+        self.border_radius = 10
 
 
 class cnts_stats_page(ft.Container):

@@ -1,15 +1,28 @@
 {
     "cSpell.words": [
         "actualizacion",
+        "BSSID",
         "btns",
+        "clmn",
+        "conect",
         "configuracion",
         "Direccionador",
+        "ebtn",
+        "ecosense",
+        "elvt",
         "estadisticas",
+        "ethernet",
         "extrc",
+        "gnrl",
         "grafico",
         "graficos",
         "informacion",
+        "iwgetid",
+        "latin",
         "levelname",
+        "listview",
+        "netsh",
+        "nmcli",
         "opcion",
         "parametro",
         "parametros",
@@ -17,6 +30,8 @@
         "rele",
         "reles",
         "safearea",
-        "topico"
+        "topico",
+        "txfs",
+        "verificacion"
     ]
 }

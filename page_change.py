@@ -4,15 +4,7 @@ import flet as ft
 def main(page: ft.Page):
     page.title = "EcoSence"
     page.adaptive = True
-    page.theme = ft.Theme(
-        color_scheme=ft.ColorScheme(
-            primary=ft.colors.TEAL_ACCENT_700,
-            on_primary=ft.colors.GREEN_ACCENT_700,
-            secondary=ft.colors.TEAL_ACCENT_400,
-            on_secondary=ft.colors.GREEN_ACCENT_400,
-        )
-    )
-
+    
     def route_change(route):
         def estadisticas():
             return [
@@ -88,7 +80,7 @@ def main(page: ft.Page):
 
         ##################################################
         # CARGA DE PAGINAS
-        from page.home import home
+        from page.home.home_page import home_page as home
 
         page.views.clear()
         page.views.append(ft.View("/", home()))
