@@ -1,26 +1,47 @@
 import flet as ft
-from pages.connections.verificar_wifi import get_network_ssid
+from decorators.home_class import elements
 
-ssid = get_network_ssid()
 
-def home_page(mqtt_configuration, btn_next):
+def home_page():
+    cultivo = elements(color=ft.colors.AMBER, content=ft.Text("Cultivo", color=ft.colors.BLACK))
+    sistema = elements(color=ft.colors.GREEN_200, content=ft.Text("Sistema", color=ft.colors.BLACK))
+    parametros = elements(color=ft.colors.CYAN_200, content=ft.Text("Parametros", color=ft.colors.BLACK))
+    estadisticas = elements(
+        color=ft.colors.RED_ACCENT_200, content=ft.Text("Estadisticas", color=ft.colors.BLACK)
+    )
+
     return [
-        ft.AppBar(title=ft.Text("Wifi Configuration")),
-        ft.ResponsiveRow(
-            columns=2,
-            controls=[
-                # Wifi Configuration
-                ft.Column(
-                    col=1,
-                    controls=[
-                        ft.Text("Wifi Configuration"),
-                        ft.TextField(label="SSID", value=ssid, read_only=True),
-                    ],
-                    
-                ),
-                mqtt_configuration,
-            ],
-            
+        ft.AppBar(title=ft.Text("EcoSense APP")),
+        ft.Container(
+            bgcolor=ft.colors.GREEN,
+            padding=20,
+            margin=10,
+            alignment=ft.alignment.center,
+            content=ft.Card(
+                color=ft.colors.BLUE_GREY_600,
+                content=ft.Container(
+                    padding=10,
+                    content=ft.Column(
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        spacing=10,
+                        controls=[
+                            ft.Text(
+                                "EcoSense APP",
+                                size=30,
+                                weight=ft.FontWeight.BOLD,
+                            ),
+                            ft.Text(
+                                "   Esta es una aplicación para la gestión de tus cultivos. Podrás gestionar tus cultivos de forma sencilla monitorizando los siguientes elementos:",
+                                size=15,
+                            ),
+                            ft.Row(
+                                controls=[cultivo, sistema, parametros, estadisticas],
+                                alignment=ft.MainAxisAlignment.CENTER,
+                            ),
+                        ],
+                    )
+                )
+            ),
         ),
-        btn_next,
     ]
