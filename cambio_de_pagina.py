@@ -7,7 +7,7 @@ import json, time
 
 ################################################################################################
 # Configuración del cliente MQTT ###############################################################################
-broker = "10.6.27.163"
+broker = "192.168.93.90"
 topic = "EcoSense/esp32/#"
 client = mqtt.Client()
 
@@ -54,6 +54,21 @@ def main(page: Page):
         page.snack_bar = snackbar_esp32_offline
         page.snack_bar.open = True
 
+    def toggle_fan(e):
+        reles_values["fan"] = not reles_values["fan"]
+        txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
+        client.publish("EcoSense/plc/rele1", json.dumps({"fan": reles_values["fan"]}))
+        
+        page.update()
+        print(f"toggle Fan: {reles_values['fan']}")
+    
+    def toggle_extrc(e):
+        reles_values["extrc"] = not reles_values["extrc"]
+        txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
+        client.publish("EcoSense/plc/rele2", json.dumps({"extrc": reles_values["extrc"]}))
+        page.update()
+        print(f"toggle Extractor: {reles_values['extrc']}")
+
     def on_message(client, userdata, msg):
         def sync(mensaje):
             mensaje = {"temp": 30, "humd": 50, "tier": 50, "rele1": 1, "rele2": 0}
@@ -76,31 +91,38 @@ def main(page: Page):
 
             txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
             txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
+
             btn_fan.tooltip = "Alternar VENTILADOR"
             btn_extrc.tooltip = "Alternar EXTRUSOR"
-            btn_fan.on_click = print("toggle_fan")
-            btn_extrc.on_click = print("toggle_extrc")
+            btn_fan.disabled = False
+            btn_extrc.disabled = False
 
             page.update()
             print("# Reles y sensores actualizados en la pagina APP")
         
+        ################################################################################
+        # Procesar el topico y mensaje
         topico = msg.topic
-        print(f"### Mensaje recibido en {topico}: {msg.payload}")
-
+        mensaje = json.loads(msg.payload)         
+        
+        # Evaluamos el topico y el mensaje
         if topico == "EcoSense/esp32/sync":
-            mensaje = msg.payload.decode()
-            global btn_connect, btn_ecosense, app_sync
-            
-            if mensaje == "1":    
+            global app_sync
+            app_sync = bool(mensaje["sync"])
+            if mensaje:    
                 app_sync = True
+                client.publish("EcoSense/plc/feedback", json.dumps({"feedback": True}))
+                print(f"Mensaje de actualizacion {json.dumps({"feedback": True})} enviado a 'EcoSense/plc/actualizacion'")
                 if page.route == "/":
+                    global btn_ecosense
                     btn_ecosense.disabled = not app_sync
                     
                 elif page.route == "/mqtt_page":
+                    global btn_connect
                     btn_connect.text = "Conectado"
                     btn_connect.disabled = not app_sync
 
-            elif mensaje == "0":
+            else:
                 offline()
                 app_sync = False
                 btn_connect.text = "Desconectado"
@@ -111,14 +133,21 @@ def main(page: Page):
             page.update()
 
         # Si la aplicación esta en la pagina principal
-        if app_sync and page.route == "/app_page":
+        if app_sync:
             try:
                 mensaje = json.loads(msg.payload)
             except Exception as e:
                 print(f"## Error al procesar el mensaje: {e}")
 
             # Procesar el topico
-            if topico == "EcoSense/esp32/sensores":
+            if topico == "EcoSense/esp32/feedback":
+                sync(mensaje)
+                feedback(mensaje)
+            
+            elif topico == "EcoSense/esp32/sync":
+                pass
+
+            elif topico == "EcoSense/esp32/sensores":
                 environment_values["temp"] = float(mensaje["temp"])
                 environment_values["humd"] = float(mensaje["humd"])
                 environment_values["tier"] = float(mensaje["tier"])
@@ -154,10 +183,7 @@ def main(page: Page):
 
                 print("# Rele2 actualizado")
 
-            elif topico == "EcoSense/esp32/feedback":
-                sync(mensaje)
-                feedback(mensaje)
-
+                
             else:
                 print(f"## Topico no registrado: {topico}")
 
@@ -175,14 +201,14 @@ def main(page: Page):
     ###############################################################
     # Variables globales de la pagina #############################
     # - Variables globales de Reles
-    btn_fan = ft.IconButton(icon=ft.icons.LIGHT_MODE, col=3)
+    btn_fan = ft.IconButton(icon=ft.icons.LIGHT_MODE, col=3, on_click=toggle_fan)
     if txf_fan.value == "Unknown":
         btn_fan.tooltip = "Sin conexión"
         btn_fan.disabled = True
     elif txf_fan.value != "Unknown":
         btn_fan.disabled = False
 
-    btn_extrc = ft.IconButton(icon=ft.icons.MODE_FAN_OFF_ROUNDED, col=3)
+    btn_extrc = ft.IconButton(icon=ft.icons.MODE_FAN_OFF_ROUNDED, col=3, on_click=toggle_extrc)
     if txf_extrc.value == "Unknown":
         btn_extrc.tooltip = "Sin conexión"
         btn_extrc.disabled = True
@@ -192,7 +218,6 @@ def main(page: Page):
     ###########################################################################
     # Función para actualizar la informacion de la pagina
     def route_change(route):
-        print(f"### Route change: {route}")
         from pages.home.home_page import home_page as home
         from pages.app.app import app_page as app
         from pages.components.mqtt import mqtt_page as mqtt
@@ -256,6 +281,7 @@ def main(page: Page):
             )
             mqtt_page = mqtt(
                 mqtt_values,
+                app_sync,
                 ft.Row(
                     alignment=ft.MainAxisAlignment.CENTER,
                     controls=[btn_connect],
@@ -303,18 +329,15 @@ def main(page: Page):
         print(f"## Route change terminado a {page.route}")
     ##########################################################################
     def view_pop(view):
-        print(f"### View pop: {view}")
-        print((type(view), view))
         page.views.pop()
         top_view = page.views[-1]
         page.go(top_view.route)
-        print(f"## View pop terminado a {page.route}")
 
     # CARGA DE PAGINAS
     page.on_route_change = route_change
     page.on_view_pop = view_pop
 
-    client.publish("EcoSense/plc/actualizacion", json.dumps({"feedback": True}))
+    client.publish("EcoSense/plc/sync", json.dumps({"sync": True}))
     print("## APP cargada y solicitud de actualizacion enviada")
 
     page.go(page.route)
