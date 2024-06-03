@@ -7,7 +7,7 @@ import json, time
 
 ################################################################################################
 # Configuración del cliente MQTT ###############################################################################
-broker = "192.168.0.9"
+broker = "10.6.27.163"
 topic = "EcoSense/esp32/#"
 client = mqtt.Client()
 
@@ -31,6 +31,10 @@ btn_sync = ft.TextButton(
     tooltip="Ir a APP",
     disabled=not app_sync,
 )
+snackbar_esp32_offline = ft.SnackBar(
+    content=ft.Text("ESP32 Desconectado!", color=ft.colors.BLACK),
+    bgcolor=ft.colors.RED,
+)
 
 # - Valores de los sensores
 environment_values = {"temp": None, "humd": None, "tier": None}
@@ -46,6 +50,10 @@ txf_extrc = txf_rele(label="Extractor", value="Unknown")
 
 #################################################################################################
 def main(page: Page):
+    def offline():
+        page.snack_bar = snackbar_esp32_offline
+        page.snack_bar.open = True
+
     def on_message(client, userdata, msg):
         def sync(mensaje):
             mensaje = {"temp": 30, "humd": 50, "tier": 50, "rele1": 1, "rele2": 0}
@@ -75,7 +83,7 @@ def main(page: Page):
 
             page.update()
             print("# Reles y sensores actualizados en la pagina APP")
-
+        
         topico = msg.topic
         print(f"### Mensaje recibido en {topico}: {msg.payload}")
 
@@ -92,18 +100,18 @@ def main(page: Page):
                     btn_connect.text = "Conectado"
                     btn_connect.disabled = not app_sync
 
-                    
-                
             elif mensaje == "0":
+                offline()
                 app_sync = False
                 btn_connect.text = "Desconectado"
                 btn_connect.disabled = not app_sync
                 btn_ecosense.disabled = not app_sync
+                view_pop(None)
 
             page.update()
 
         # Si la aplicación esta en la pagina principal
-        if page.route == "/app_page":
+        if app_sync and page.route == "/app_page":
             try:
                 mensaje = json.loads(msg.payload)
             except Exception as e:
@@ -182,7 +190,9 @@ def main(page: Page):
         btn_extrc.disabled = False
 
     ###########################################################################
+    # Función para actualizar la informacion de la pagina
     def route_change(route):
+        print(f"### Route change: {route}")
         from pages.home.home_page import home_page as home
         from pages.app.app import app_page as app
         from pages.components.mqtt import mqtt_page as mqtt
@@ -195,6 +205,7 @@ def main(page: Page):
 
         ################################################################################
         # HOME_PAGE ###################################################################
+        global home_page
         home_page = home()
         btn_mqtt = ft.TextButton(
             text="MQTT",
@@ -289,12 +300,15 @@ def main(page: Page):
             page.views.append(ft.View("/app_page", app_page))
 
         page.update()
-
+        print(f"## Route change terminado a {page.route}")
     ##########################################################################
     def view_pop(view):
+        print(f"### View pop: {view}")
+        print((type(view), view))
         page.views.pop()
         top_view = page.views[-1]
         page.go(top_view.route)
+        print(f"## View pop terminado a {page.route}")
 
     # CARGA DE PAGINAS
     page.on_route_change = route_change
