@@ -1,5 +1,5 @@
 import flet as ft, typing as t
-from data import *
+from database.data.data import *
 from graph_config import *
 
 ################################################################################

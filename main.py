@@ -59,16 +59,13 @@ def main(page: Page):
         reles_values["fan"] = not reles_values["fan"]
         txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
         client.publish("EcoSense/plc/rele1", json.dumps({"fan": reles_values["fan"]}))
-        
         page.update()
-        print(f"toggle Fan: {reles_values['fan']}")
     
     def toggle_extrc(e):
         reles_values["extrc"] = not reles_values["extrc"]
         txf_extrc.value = "Encendido" if reles_values["extrc"] else "Apagado"
         client.publish("EcoSense/plc/rele2", json.dumps({"extrc": reles_values["extrc"]}))
         page.update()
-        print(f"toggle Extractor: {reles_values['extrc']}")
 
     def on_message(client, userdata, msg):
         def sync(mensaje):
@@ -156,24 +153,20 @@ def main(page: Page):
                 txf_temp_value.value = f"{environment_values['temp']} °C"
                 txf_humd_value.value = f"{environment_values['humd']} %"
                 txf_tier_value.value = f"{environment_values['tier']}"
-                page.update()
 
             elif topico == "EcoSense/esp32/sensor/dht11":
                 environment_values["temp"] = float(mensaje["temp"])
                 environment_values["humd"] = float(mensaje["humd"])
                 txf_temp_value.value = f"{environment_values['temp']} °C"
                 txf_humd_value.value = f"{environment_values['humd']} %"
-                page.update()
 
             elif topico == "EcoSense/esp32/sensor/hd38":
                 environment_values["tier"] = float(mensaje["tier"])
                 txf_tier_value.value = f"{environment_values['tier']}"
-                page.update()
 
             elif topico == "EcoSense/esp32/rele1":
                 reles_values["fan"] = int(mensaje["rele1"])
                 txf_fan.value = "Encendido" if reles_values["fan"] else "Apagado"
-                page.update()
 
                 print("# Rele1 actualizado")
 
@@ -183,10 +176,11 @@ def main(page: Page):
                 page.update()
 
                 print("# Rele2 actualizado")
-
-                
+    
             else:
                 print(f"## Topico no registrado: {topico}")
+
+            page.update()
 
     ##############################################################################
     # Aspectos generales de la pagina ###############################################################################

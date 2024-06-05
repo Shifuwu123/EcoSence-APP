@@ -86,6 +86,6 @@ class graph_major(ft.LineChart):
 
 # Fin configuración Gráficas ############################################
 ################################################################################
-from data import data_temperatura
+from database.data.data import data_temperatura
 
 chart = graph_major(data_series=data_temperatura)

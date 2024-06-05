@@ -1,9 +1,8 @@
-/.venv  
 /__pycache__
+/.venv
 /.vscode
-/database/*
-/registros/*
-/logs/*
+/database/data/__pycache__
+/decorators/__pycache__
 /pages/app/__pycache__
 /pages/components/__pycache__
 /pages/connections/__pycache__
