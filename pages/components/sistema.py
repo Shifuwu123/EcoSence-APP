@@ -1,53 +1,51 @@
 import flet as ft
+from decorators.app_class import containers_app_page as container
 
+class responsive_row(ft.ResponsiveRow):
+    def __init__(self, controls: list[ft.Control]):
+        super().__init__()
+        self.spacing=5
+        self.columns=10
+        self.alignment=ft.MainAxisAlignment.CENTER
+        self.vertical_alignment=ft.CrossAxisAlignment.CENTER
+        self.controls=controls
 
 def system_info(rele1_txf, rele1_button, rele2_txf, rele2_button):
-    return ft.Container(
-        bgcolor=ft.colors.GREEN,
-        height=305,
-        padding=10,
-        alignment=ft.alignment.center,
+    card = ft.Card(
+        color=ft.colors.GREEN_ACCENT_400,
+        margin=10,
+        elevation=2.0,
         col=1,
         content=ft.Column(
             alignment=ft.MainAxisAlignment.SPACE_AROUND,
             controls=[
-                ft.Container(
-                    bgcolor=ft.colors.BLUE_GREY_600,
-                    padding=15,
-                    border_radius=10,
-                    alignment=ft.alignment.center,
-                    content=ft.Text("System"),
+                container(
+                    ft.Text("Sistema")
                 ),
-                ft.Container(
-                    bgcolor=ft.colors.BLUE_GREY_600,
-                    padding=15,
-                    border_radius=10,
-                    alignment=ft.alignment.center,
-                    content=ft.Column(
+                container(
+                    ft.Column(
                         controls=[
-                            ft.ResponsiveRow(
-                                spacing=5,
-                                columns=10,
-                                alignment=ft.MainAxisAlignment.CENTER,
-                                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                controls=[
+                            #Rele 1
+                            responsive_row(
+                                [
                                     rele1_txf,
                                     rele1_button,
-                                ],
+                                ]
                             ),
-                            ft.ResponsiveRow(
-                                spacing=5,
-                                columns=10,
-                                alignment=ft.MainAxisAlignment.CENTER,
-                                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                controls=[
+                            
+                            # Rele 2
+                            responsive_row(
+                                [
                                     rele2_txf,
                                     rele2_button,
-                                ],
+                                ]
                             ),
                         ]
                     ),
+                
                 ),
-            ]
+            ],
         ),
     )
+
+    return card

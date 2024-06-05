@@ -1,5 +1,6 @@
 import flet as ft
 import typing as t
+from decorators.app_class import containers_app_page as container
 
 class rrw_cnt_params(ft.ResponsiveRow):
     def __init__(
@@ -49,38 +50,29 @@ class rrw_cnt_params(ft.ResponsiveRow):
         self.columns = 12
 
 def params_info(temp_value, humd_value, tier_value):
-    return ft.Container(
-        bgcolor=ft.colors.GREEN,
-        height=440,
-        padding=10,
-        alignment=ft.alignment.center,
+    card = ft.Card(
+        color=ft.colors.GREEN_ACCENT_400,
+        margin=10,
+        elevation=2.0,
         col=1,
         content=ft.Column(
             alignment=ft.MainAxisAlignment.SPACE_AROUND,
             controls=[
                 # Title
-                ft.Container(
-                    bgcolor=ft.colors.BLUE_GREY_600,
-                    padding=15,
-                    border_radius=10,
-                    alignment=ft.alignment.center,
-                    content=ft.Text("System"),
+                container(
+                    ft.Text("Parametros")
                 ),
-                # Info
-                ft.Container(
-                    bgcolor=ft.colors.BLUE_GREY_600,
-                    padding=15,
-                    border_radius=10,
-                    alignment=ft.alignment.center,
-                    content=ft.Column(
+                container(
+                    ft.Column(
                         controls=[
                             rrw_cnt_params(param="temp", txf_value=temp_value),
                             rrw_cnt_params(param="humd", txf_value=humd_value),
                             rrw_cnt_params(param="tier", txf_value=tier_value),
                         ]
-                    ),
-                ),
-                            
+                    )
+                )
             ]
-        ),
+        )
     )
+    
+    return card

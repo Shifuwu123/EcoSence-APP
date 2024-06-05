@@ -1,6 +1,6 @@
 import flet as ft, typing as t
 from database.data.data import *
-from graph_config import *
+from graph_config import chart
 
 ################################################################################
 """ Configuración Menus """
@@ -13,9 +13,9 @@ def toggle_data(e):
 
 
 class dpbx_graficos(ft.Dropdown):
-    def __init__(self):
+    def __init__(self, on_change):
         super().__init__()
-        self.on_change = toggle_data
+        self.on_change = on_change
         self.options = [
             ft.dropdown.Option("Temperatura"),
             ft.dropdown.Option("Humedad"),
@@ -301,7 +301,7 @@ class cnt_stats(ft.Container):
                         )
                     ),
                     # 2da fila con el gráfico
-                    ft.Container(content=chart, adaptive=True, height=270, padding=10),
+                    ft.Container(content=chart, adaptive=True, padding=10),
                 ],
             ),
             padding=10,

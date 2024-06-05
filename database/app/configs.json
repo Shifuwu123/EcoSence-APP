@@ -1,0 +1,6 @@
+{
+    "MQTT": {
+        "broker": "192.168.221.90",
+        "topic": "EcoSense/esp32/#"
+    }
+}

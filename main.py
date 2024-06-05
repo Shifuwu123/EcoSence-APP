@@ -2,13 +2,14 @@ import flet as ft
 from flet import Page
 
 import paho.mqtt.client as mqtt
-
-import json, time
+import json
 
 ################################################################################################
 # Configuración del cliente MQTT ###############################################################################
-broker = "192.168.221.90"
-topic = "EcoSense/esp32/#"
+configs = json.load(open("database/app/configs.json"))
+mqtt_config = configs["MQTT"]
+broker = mqtt_config["broker"]
+topic = mqtt_config["topic"]
 client = mqtt.Client()
 
 try:
@@ -67,10 +68,11 @@ def main(page: Page):
         client.publish("EcoSense/plc/rele2", json.dumps({"extrc": reles_values["extrc"]}))
         page.update()
 
+    def toggle_data(e):
+        print("toggle_data")
+
     def on_message(client, userdata, msg):
         def sync(mensaje):
-            mensaje = {"temp": 30, "humd": 50, "tier": 50, "rele1": 1, "rele2": 0}
-
             # Parametros del cultivo
             environment_values["temp"] = float(mensaje["temp"])
             environment_values["humd"] = float(mensaje["humd"])
@@ -96,7 +98,6 @@ def main(page: Page):
             btn_extrc.disabled = False
 
             page.update()
-            print("# Reles y sensores actualizados en la pagina APP")
         
         ################################################################################
         # Procesar el topico y mensaje
@@ -330,11 +331,12 @@ def main(page: Page):
             params = params_info(txf_temp_value, txf_humd_value, txf_tier_value)
 
             # Cargamos informacion de las estadisticas
-            stats = stats_info()
+            stats = stats_info(on_change=toggle_data)
 
             # Cargamos la pagina de la aplicación
             app_page = app(crop, system, params, stats)
-            page.views.append(ft.View("/app_page", app_page))
+            page.views.append(ft.View("/app_page", app_page, bgcolor=ft.colors.GREEN))
+            
 
         page.update()
     ##########################################################################

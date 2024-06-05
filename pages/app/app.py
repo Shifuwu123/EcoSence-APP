@@ -11,13 +11,13 @@ def app_page(info_crop, info_system, info_params, info_stats):
                 ft.ResponsiveRow(
                     columns=2,
                     alignment=ft.MainAxisAlignment.CENTER,
-                    vertical_alignment=ft.MainAxisAlignment.CENTER,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[info_crop, info_system],
                 ),
                 ft.ResponsiveRow(
                     columns=2,
                     alignment=ft.MainAxisAlignment.CENTER,
-                    vertical_alignment=ft.MainAxisAlignment.CENTER,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[info_params, info_stats],
                 ),
             ],

@@ -1,36 +1,31 @@
 import flet as ft
-
+from decorators.app_class import containers_app_page as container
 
 def crop_info(nombre_cultivo, semana_cultivo, fase_cultivo):
-    return ft.Container(
-        bgcolor=ft.colors.GREEN,
-        height=305,
-        padding=10,
-        alignment=ft.alignment.center,
+    card = ft.Card(
+        color=ft.colors.GREEN_ACCENT_400,
+        margin=10,
+        elevation=2.0,
         col=1,
         content=ft.Column(
             alignment=ft.MainAxisAlignment.SPACE_AROUND,
             controls=[
-                ft.Container(
-                    bgcolor=ft.colors.BLUE_GREY_600,
-                    padding=10,
-                    border_radius=10,
-                    alignment=ft.alignment.center,
-                    content=ft.Text("Crop"),
+                # Titulo
+                container(
+                    ft.Text("Cultivo"),
                 ),
-                ft.Container(
-                    bgcolor=ft.colors.BLUE_GREY_600,
-                    padding=10,
-                    border_radius=10,
-                    alignment=ft.alignment.center,
-                    content=ft.Column(
+                # Información
+                container(
+                    ft.Column(
                         controls=[
                             nombre_cultivo,
                             semana_cultivo,
                             fase_cultivo,
                         ]
-                    ),
+                    )
                 ),
-            ]
+            ],
         ),
     )
+
+    return card
