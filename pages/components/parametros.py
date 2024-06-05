@@ -51,10 +51,12 @@ class rrw_cnt_params(ft.ResponsiveRow):
 def params_info(temp_value, humd_value, tier_value):
     return ft.Container(
         bgcolor=ft.colors.GREEN,
+        height=440,
         padding=10,
         alignment=ft.alignment.center,
         col=1,
         content=ft.Column(
+            alignment=ft.MainAxisAlignment.SPACE_AROUND,
             controls=[
                 # Title
                 ft.Container(

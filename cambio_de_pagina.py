@@ -7,7 +7,7 @@ import json, time
 
 ################################################################################################
 # Configuración del cliente MQTT ###############################################################################
-broker = "192.168.93.90"
+broker = "192.168.221.90"
 topic = "EcoSense/esp32/#"
 client = mqtt.Client()
 
@@ -15,6 +15,7 @@ try:
     from pages.connections.verificacion_mqtt import mqtt_connect
 
     mqtt_connect(client, broker, topic)
+    mqtt_sync = True
 
 except Exception as e:
     print(e)
@@ -201,7 +202,12 @@ def main(page: Page):
     ###############################################################
     # Variables globales de la pagina #############################
     # - Variables globales de Reles
-    btn_fan = ft.IconButton(icon=ft.icons.LIGHT_MODE, col=3, on_click=toggle_fan)
+    btn_fan = ft.IconButton(
+        icon=ft.icons.LIGHT_MODE, 
+        col=3, 
+        on_click=toggle_fan,
+        
+    )
     if txf_fan.value == "Unknown":
         btn_fan.tooltip = "Sin conexión"
         btn_fan.disabled = True
@@ -260,7 +266,7 @@ def main(page: Page):
         btn_connect = ft.TextButton(
             text="Conectado" if app_sync else "Desconectado",
             icon=ft.icons.ROUTER,
-            tooltip="MQTT",
+            tooltip="ESP32",
             disabled=not app_sync,
             on_click=lambda _: page.go("/mqtt_page"),
         )
@@ -276,6 +282,17 @@ def main(page: Page):
                     ft.Text("Broker MQTT"),
                     ft.TextField(label="Broker", value=broker, read_only=True),
                     ft.TextField(label="Topic", value=topic, read_only=True),
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        controls=[
+                            ft.TextButton(
+                                text="Conectado" if mqtt_sync else "Desconectado",
+                                icon=ft.icons.PRIVATE_CONNECTIVITY,
+                                tooltip="MQTT",
+                                disabled=not mqtt_sync                              
+                            ),
+                        ],
+                    )
                 ],
                 col=1,
             )
@@ -326,7 +343,6 @@ def main(page: Page):
             page.views.append(ft.View("/app_page", app_page))
 
         page.update()
-        print(f"## Route change terminado a {page.route}")
     ##########################################################################
     def view_pop(view):
         page.views.pop()

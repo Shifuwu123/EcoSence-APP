@@ -4,10 +4,12 @@ import flet as ft
 def system_info(rele1_txf, rele1_button, rele2_txf, rele2_button):
     return ft.Container(
         bgcolor=ft.colors.GREEN,
+        height=305,
         padding=10,
         alignment=ft.alignment.center,
         col=1,
         content=ft.Column(
+            alignment=ft.MainAxisAlignment.SPACE_AROUND,
             controls=[
                 ft.Container(
                     bgcolor=ft.colors.BLUE_GREY_600,

@@ -4,10 +4,12 @@ import flet as ft
 def crop_info(nombre_cultivo, semana_cultivo, fase_cultivo):
     return ft.Container(
         bgcolor=ft.colors.GREEN,
+        height=305,
         padding=10,
         alignment=ft.alignment.center,
         col=1,
         content=ft.Column(
+            alignment=ft.MainAxisAlignment.SPACE_AROUND,
             controls=[
                 ft.Container(
                     bgcolor=ft.colors.BLUE_GREY_600,
