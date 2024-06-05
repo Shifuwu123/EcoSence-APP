@@ -1,7 +1,6 @@
 import flet as ft
-from config import cnt_stats as grafico
 from decorators.app_class import containers_app_page as container
-
+from pages.components.grafico import grafico
 
 def stats_info() -> ft.Container:
     card = ft.Card(
@@ -15,7 +14,7 @@ def stats_info() -> ft.Container:
                 container(
                     ft.Text("Estadisticas")
                 ),
-                grafico(),
+                grafico()
             ],
         ),
     )

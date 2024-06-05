@@ -331,7 +331,7 @@ def main(page: Page):
             params = params_info(txf_temp_value, txf_humd_value, txf_tier_value)
 
             # Cargamos informacion de las estadisticas
-            stats = stats_info(on_change=toggle_data)
+            stats = stats_info()
 
             # Cargamos la pagina de la aplicación
             app_page = app(crop, system, params, stats)

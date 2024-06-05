@@ -8,21 +8,6 @@ class chart_axis_left(ft.ChartAxisLabel):
         self.value = position
         self.label = ft.Text(f"{position}m", size=14, weight=ft.FontWeight.BOLD)
 
-
-class chart_title(ft.ChartAxis):
-    def __init__(self):
-        super().__init__()
-        self.labels = [
-            chart_axis_left(2),
-            chart_axis_left(4),
-            chart_axis_left(6),
-            chart_axis_left(8),
-            chart_axis_left(10),
-            chart_axis_left(12),
-        ]
-        self.labels_size = 40
-
-
 class chart_axis_bottom(ft.ChartAxisLabel):
     def __init__(self, position: int, hr_ago: int):
         hr_ago = f"{hr_ago}H AGO" if hr_ago != 0 else 'NOW'
@@ -40,6 +25,18 @@ class chart_axis_bottom(ft.ChartAxisLabel):
         self.value = position
         self.label = time_label
 
+class chart_title(ft.ChartAxis):
+    def __init__(self):
+        super().__init__()
+        self.labels = [
+            chart_axis_left(2),
+            chart_axis_left(4),
+            chart_axis_left(6),
+            chart_axis_left(8),
+            chart_axis_left(10),
+            chart_axis_left(12),
+        ]
+        self.labels_size = 40
 
 class chart_title2(ft.ChartAxis):
     def __init__(self):
