@@ -72,6 +72,7 @@ def main(page: Page):
         print("toggle_data")
 
     def on_message(client, userdata, msg):
+
         def sync(mensaje):
             # Parametros del cultivo
             environment_values["temp"] = float(mensaje["temp"])

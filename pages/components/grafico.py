@@ -18,7 +18,7 @@ class chart_axis_bottom(ft.ChartAxisLabel):
         time_label = ft.Container(
             content=ft.Text(
                 hr_ago,
-                size=16,
+                size=12,
                 weight=ft.FontWeight.BOLD
             ),
             margin=ft.margin.only(top=10),
@@ -64,9 +64,10 @@ class grid_line(ft.ChartGridLines):
         self.width = 1
 
 def grafico() -> ft.Container:
-    card = container(
-        ft.LineChart(
-            data_series=[],
+    from data import data_temperatura as data_series
+
+    card = ft.LineChart(
+            data_series=data_series,
             border=ft.border.all(3, ft.colors.with_opacity(0.2, ft.colors.ON_SURFACE)),
             horizontal_grid_lines=grid_line(),
             vertical_grid_lines=grid_line(),
@@ -77,6 +78,6 @@ def grafico() -> ft.Container:
             min_x=0,
             max_x=12,
             expand=True
-        )
     )
+
     return card

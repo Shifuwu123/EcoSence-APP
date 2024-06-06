@@ -44,7 +44,6 @@ class dpbx_graficos(ft.Dropdown):
         self.text_size = 14
         self.content_padding = 10
 
-
 class cnt_stats(ft.Container):
     def __init__(self, on_change):
         super().__init__()
