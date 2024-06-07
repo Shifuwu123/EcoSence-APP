@@ -2,7 +2,7 @@ import flet as ft
 from flet import Page
 
 import paho.mqtt.client as mqtt
-import json
+import json, time, threading
 
 ################################################################################################
 # Configuración del cliente MQTT ###############################################################################
@@ -49,12 +49,32 @@ reles_values = {"fan": 0, "extrc": 0}
 txf_fan = txf_rele(label="Ventilador", value="Unknown")
 txf_extrc = txf_rele(label="Extractor", value="Unknown")
 
+# - Temporizador para desconexión
+sync_timer = None
+TIMER_INTERVAL = 20
 
 #################################################################################################
 def main(page: Page):
     def offline():
         page.snack_bar = snackbar_esp32_offline
         page.snack_bar.open = True
+
+    def reset_timer():
+        global sync_timer
+        if sync_timer:
+            sync_timer.cancel()
+        sync_timer = threading.Timer(TIMER_INTERVAL, handle_disconnect)
+        sync_timer.start()
+
+    def handle_disconnect():
+        global app_sync
+        app_sync = False
+        offline()
+        btn_connect.text = "Desconectado"
+        btn_connect.disabled = not app_sync
+        btn_ecosense.disabled = not app_sync
+        view_pop(None)
+        page.update()
 
     def toggle_fan(e):
         reles_values["fan"] = not reles_values["fan"]
@@ -72,7 +92,6 @@ def main(page: Page):
         print("toggle_data")
 
     def on_message(client, userdata, msg):
-
         def sync(mensaje):
             # Parametros del cultivo
             environment_values["temp"] = float(mensaje["temp"])
@@ -82,8 +101,7 @@ def main(page: Page):
             # Estado de los Reles (sistema)
             reles_values["fan"] = int(mensaje["rele1"])
             reles_values["extrc"] = int(mensaje["rele2"])
-
-            print("# Estados de los Reles y Valores de los sensores actualizados")
+            time.sleep(1)
 
         def feedback(mensaje):
             txf_temp_value.value = f"{environment_values['temp']} °C"
@@ -104,36 +122,31 @@ def main(page: Page):
         # Procesar el topico y mensaje
         topico = msg.topic
         mensaje = json.loads(msg.payload)         
-        
+
         # Evaluamos el topico y el mensaje
         if topico == "EcoSense/esp32/sync":
             global app_sync
             app_sync = bool(mensaje["sync"])
             if mensaje:    
                 app_sync = True
+                reset_timer()
                 client.publish("EcoSense/plc/feedback", json.dumps({"feedback": True}))
-                print(f"Mensaje de actualizacion {json.dumps({"feedback": True})} enviado a 'EcoSense/plc/actualizacion'")
+                print(f"Mensaje de actualizacion {json.dumps({"feedback": True})} enviado a 'EcoSense/plc/sync'")
                 if page.route == "/":
-                    global btn_ecosense
                     btn_ecosense.disabled = not app_sync
                     
                 elif page.route == "/mqtt_page":
-                    global btn_connect
                     btn_connect.text = "Conectado"
                     btn_connect.disabled = not app_sync
 
             else:
-                offline()
-                app_sync = False
-                btn_connect.text = "Desconectado"
-                btn_connect.disabled = not app_sync
-                btn_ecosense.disabled = not app_sync
-                view_pop(None)
+                print(f"Mensaje: {mensaje}")
 
             page.update()
 
         # Si la aplicación esta en la pagina principal
         if app_sync:
+            reset_timer()
             try:
                 mensaje = json.loads(msg.payload)
             except Exception as e:
@@ -354,6 +367,8 @@ def main(page: Page):
     print("## APP cargada y solicitud de actualizacion enviada")
 
     page.go(page.route)
+
+    reset_timer()
 
 
 ft.app(target=main)
