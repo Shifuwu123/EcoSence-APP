@@ -348,7 +348,8 @@ def main(page: Page):
             stats = stats_info()
 
             # Cargamos la pagina de la aplicación
-            app_page = app(crop, system, params, stats)
+            width = page.window_width
+            app_page = app(crop, system, params, stats, width)
             page.views.append(ft.View("/app_page", app_page, bgcolor=ft.colors.GREEN))
             
 
