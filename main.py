@@ -26,7 +26,7 @@ except Exception as e:
 from decorators.app_class import txf_sensor, txf_rele
 
 # - Sincronización
-app_sync = False
+app_sync = True
 btn_sync = ft.TextButton(
     text="Connect",
     icon=ft.icons.ROUTER,
@@ -59,12 +59,12 @@ def main(page: Page):
         page.snack_bar = snackbar_esp32_offline
         page.snack_bar.open = True
 
-    def reset_timer():
-        global sync_timer
-        if sync_timer:
-            sync_timer.cancel()
-        sync_timer = threading.Timer(TIMER_INTERVAL, handle_disconnect)
-        sync_timer.start()
+    #def reset_timer():
+        #global sync_timer
+        #if sync_timer:
+        #    sync_timer.cancel()
+        #sync_timer = threading.Timer(TIMER_INTERVAL, handle_disconnect)
+        #sync_timer.start()
 
     def handle_disconnect():
         global app_sync
@@ -129,7 +129,7 @@ def main(page: Page):
             app_sync = bool(mensaje["sync"])
             if mensaje:    
                 app_sync = True
-                reset_timer()
+                #reset_timer()
                 client.publish("EcoSense/plc/feedback", json.dumps({"feedback": True}))
                 print(f"Mensaje de actualizacion {json.dumps({"feedback": True})} enviado a 'EcoSense/plc/sync'")
                 if page.route == "/":
@@ -146,7 +146,7 @@ def main(page: Page):
 
         # Si la aplicación esta en la pagina principal
         if app_sync:
-            reset_timer()
+            #reset_timer()
             try:
                 mensaje = json.loads(msg.payload)
             except Exception as e:
@@ -202,7 +202,7 @@ def main(page: Page):
     page.title = "EcoSense"
     page.adaptive = True
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.window_min_width = 720
+    page.window_min_width = 430
     page.window_width = 720
     page.theme = ft.Theme(color_scheme_seed="green")
     page.window_always_on_top = True
@@ -369,7 +369,10 @@ def main(page: Page):
 
     page.go(page.route)
 
-    reset_timer()
+    #reset_timer()
 
-
+# Lanzar aplicación en modo escritorio
 ft.app(target=main)
+
+# Lanzar aplicación en modo navegador
+#ft.app(target=main, mode=ft.AppView.WEB_BROWSER)
